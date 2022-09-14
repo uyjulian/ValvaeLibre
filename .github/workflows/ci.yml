@@ -1,0 +1,65 @@
+{
+  "name" : "Continuous Integration",
+  "on" : {
+    "push" : {
+      "paths" : [
+        "**.c",
+        "**.h",
+        "**.cpp",
+        "**.hpp",
+        "**.build",
+        "**.in",
+        "**.yml",
+        "**.gradle",
+        "CMakeLists.txt"
+      ]
+    },
+    "pull_request" : {
+      "paths" : [
+        "**.c",
+        "**.h",
+        "**.cpp",
+        "**.hpp",
+        "**.build",
+        "**.in",
+        "**.yml",
+        "**.gradle",
+        "CMakeLists.txt"
+      ]
+    }
+  },
+  "env" : {
+    "CMAKE_GENERATOR" : "Ninja"
+  },
+  "jobs" : {
+    "build-ubuntu" : {
+      "runs-on" : "ubuntu-20.04",
+      "timeout-minutes" : 20,
+      "steps" : [
+        {
+          "name" : "Checkout repository and submodules recursively",
+          "uses" : "actions/checkout@v2",
+          "with" : {
+            "submodules" : "recursive"
+          }
+        },
+        {
+          "name" : "Update APT information",
+          "run" : "sudo apt-get update"
+        },
+        {
+          "name" : "Install required dependencies",
+          "run" : "sudo apt-get install build-essential cmake ninja-build"
+        },
+        {
+          "name" : "Configure project",
+          "run" : "cmake -S . -B build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+        },
+        {
+          "name" : "Build project",
+          "run" : "cmake --build build"
+        }
+      ]
+    }
+  }
+}
