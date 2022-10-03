@@ -56,3 +56,25 @@ if(TARGET_RASPI_PICO)
     # create map/bin/hex/uf2 file etc.
     pico_add_extra_outputs(${program2_NAME})
 endif()
+
+set(program3_SRC
+	src/program3.cpp
+)
+
+set(program3_NAME program3)
+add_executable(${program3_NAME})
+
+target_sources(${program3_NAME} PRIVATE ${program3_SRC})
+
+
+if(TARGET_RASPI_PICO)
+    # pull in common dependencies
+    target_link_libraries(${program3_NAME} pico_stdlib)
+
+    # enable usb output, disable uart output
+    pico_enable_stdio_usb(${program3_NAME} 1)
+    pico_enable_stdio_uart(${program3_NAME} 0)
+
+    # create map/bin/hex/uf2 file etc.
+    pico_add_extra_outputs(${program3_NAME})
+endif()
