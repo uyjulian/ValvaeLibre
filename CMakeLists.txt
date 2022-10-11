@@ -32,6 +32,8 @@ if(TARGET_RASPI_PICO)
 
     # create map/bin/hex/uf2 file etc.
     pico_add_extra_outputs(${program1_NAME})
+
+    target_compile_definitions(${program1_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
 
@@ -55,6 +57,8 @@ if(TARGET_RASPI_PICO)
 
     # create map/bin/hex/uf2 file etc.
     pico_add_extra_outputs(${program2_NAME})
+
+    target_compile_definitions(${program2_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
 set(program3_SRC
@@ -77,4 +81,30 @@ if(TARGET_RASPI_PICO)
 
     # create map/bin/hex/uf2 file etc.
     pico_add_extra_outputs(${program3_NAME})
+
+    target_compile_definitions(${program3_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
+endif()
+
+set(input_from_gpio_sample_SRC
+    src/input_from_gpio_sample.cpp
+)
+
+set(input_from_gpio_sample_NAME input_from_gpio_sample)
+add_executable(${input_from_gpio_sample_NAME})
+
+target_sources(${input_from_gpio_sample_NAME} PRIVATE ${input_from_gpio_sample_SRC})
+
+
+if(TARGET_RASPI_PICO)
+    # pull in common dependencies
+    target_link_libraries(${input_from_gpio_sample_NAME} pico_stdlib)
+
+    # enable usb output, disable uart output
+    pico_enable_stdio_usb(${input_from_gpio_sample_NAME} 1)
+    pico_enable_stdio_uart(${input_from_gpio_sample_NAME} 0)
+
+    # create map/bin/hex/uf2 file etc.
+    pico_add_extra_outputs(${input_from_gpio_sample_NAME})
+
+    target_compile_definitions(${input_from_gpio_sample_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
