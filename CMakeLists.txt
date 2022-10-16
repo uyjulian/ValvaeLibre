@@ -1,5 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
 
+find_package (Python3 COMPONENTS Interpreter)
+
+if(NOT Python3_Interpreter_FOUND)
+    message(FATAL_ERROR "Python3 interpreter not found!!!")
+endif()
+
+message(STATUS "Python3: " ${Python3_EXECUTABLE})
+
+add_custom_command(
+    OUTPUT table.cpp
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/table.json ${CMAKE_CURRENT_BINARY_DIR}/table.cpp
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/table.json
+)
+
+
 if(TARGET_RASPI_PICO)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 endif()
@@ -15,6 +30,7 @@ endif()
 
 set(program1_SRC
 	src/program1.cpp
+    table.cpp
 )
 
 set(program1_NAME program1)
@@ -39,6 +55,7 @@ endif()
 
 set(program2_SRC
 	src/program2.cpp
+    table.cpp
 )
 
 set(program2_NAME program2)
@@ -63,6 +80,7 @@ endif()
 
 set(program3_SRC
 	src/program3.cpp
+    table.cpp
 )
 
 set(program3_NAME program3)
@@ -87,6 +105,7 @@ endif()
 
 set(input_from_gpio_sample_SRC
     src/input_from_gpio_sample.cpp
+    table.cpp
 )
 
 set(input_from_gpio_sample_NAME input_from_gpio_sample)
