@@ -7,6 +7,7 @@ if(NOT Python3_Interpreter_FOUND)
 endif()
 
 message(STATUS "Python3: " ${Python3_EXECUTABLE})
+message(STATUS "Command: " ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/table.json ${CMAKE_CURRENT_BINARY_DIR}/table.cpp)
 
 add_custom_command(
     OUTPUT table.cpp
@@ -21,7 +22,7 @@ endif()
 
 project(SeniorCapstoneProject2022)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if(TARGET_RASPI_PICO)
