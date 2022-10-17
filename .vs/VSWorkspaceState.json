@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\headers",
-    "\\src\\scripts"
+    "\\src"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\out",
   "PreviewInSolutionExplorer": false
 }
