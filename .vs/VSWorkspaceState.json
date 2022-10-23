@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\out",
+    "\\src",
+    "\\src\\scripts"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\src\\program1.cpp",
   "PreviewInSolutionExplorer": false
 }

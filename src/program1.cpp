@@ -1,10 +1,10 @@
+#include <iostream>
 #include "table.h"
-#include <stdio.h>
+
+using namespace std;
 
 int main(int ac, char **av)
 {
-	(void)ac;
-	(void)av;
-	fprintf(stdout, "%s\n", "Hello World from Program 1!");
+	cout << testTable.ra1 << endl;
 	return 0;
 }
