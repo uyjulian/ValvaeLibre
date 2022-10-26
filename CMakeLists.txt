@@ -82,11 +82,11 @@ if(TARGET_RASPI_PICO)
 endif()
 
 set(program3_SRC
-	src/program3.cpp
+	src/engineSim.cpp
     table.cpp
 )
 
-set(program3_NAME program3)
+set(program3_NAME engineSim)
 add_executable(${program3_NAME})
 
 target_sources(${program3_NAME} PRIVATE ${program3_SRC})
