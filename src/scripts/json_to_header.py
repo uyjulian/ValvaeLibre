@@ -78,11 +78,11 @@ for i, val in enumerate(my_table):
         array_init += ",\n"
     else:
         array_init += ", "
-array_init = array_init[:-1]
-array_init += "};\n"
+array_init = array_init[:-2]
+array_init += "\n};\n"
 
 table_init = [
-    "\nValveTable testTable = {\n",
+    "\nValveTable test_table = {\n",
     "\ttable,\n",
     "\t720,\n",
     "\t"+ str(extract_keys["number_of_cylinders"]) + "\n",
