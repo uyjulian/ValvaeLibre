@@ -2,21 +2,9 @@
 #define __TABLE_H__
 
 struct ValveTable {
-	double ra1;
-	int ra2;
-	int lobe_sep;
-
-	const int* duration;
-	const double* lift;
-	const int* open;
-	const int* close;
-	const int* lobe_close;
-
-	int durationSize;
-	int liftSize;
-	int openSize;
-	int closeSize;
-	int lobeSize;
+	const unsigned int* table;
+	int table_size;
+	int num_of_cylinders;
 };
 
 extern ValveTable testTable;
