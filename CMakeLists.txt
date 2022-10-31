@@ -7,13 +7,13 @@ if(NOT Python3_Interpreter_FOUND)
 endif()
 
 message(STATUS "Python3: " ${Python3_EXECUTABLE})
-message(STATUS "Command: " ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/table.json ${CMAKE_CURRENT_BINARY_DIR}/table.cpp)
+message(STATUS "Command: " "${Python3_EXECUTABLE} " "${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py " "${CMAKE_CURRENT_SOURCE_DIR}/src/json/table.json " "${CMAKE_CURRENT_BINARY_DIR}/table.cpp")
 
 
 add_custom_command(
     OUTPUT table.cpp
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/table.json ${CMAKE_CURRENT_BINARY_DIR}/table.cpp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/table.json
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/json/table.json ${CMAKE_CURRENT_BINARY_DIR}/table.cpp
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts/json_to_header.py ${CMAKE_CURRENT_SOURCE_DIR}/src/json/table.json
 )
 
 include_directories(src)
