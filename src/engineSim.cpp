@@ -3,6 +3,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <cmath>
 #include "table.h"
 
 int RPM = 60;
