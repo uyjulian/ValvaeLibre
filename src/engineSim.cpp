@@ -4,37 +4,43 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include <ratio>
 #include "table.h"
 
-int RPM = 60;
+int RPM = 6000;
 
 using namespace std;
 
-int waitTime(int);
-void CPS(toneWheel, int);
+chrono::nanoseconds waitTime(int);
+void CPS(toneWheel, chrono::nanoseconds);
 void signalOut(int, bool);
 
 struct toneWheel
 {
-	int numOfTeeth = 35;
-	int degOfSeperation = 10;
-	int missingTooth = 36;
+	int numOfTeeth = 35;		
+	int degOfSeperation = 10;	//from leading edge to leading edge
+	int missingTooth = 36;		//expand to multiple later
 
 };
 
+
 int main(int ac, char** av)
 {
-	int sleepTime = waitTime(720);
-	//cout << sleepTime;
+	auto sleepTime = waitTime(720);
+	//cout << sleepTime.count() << "\n";
+	return 0;
 }
 
-int waitTime(int tableEntries) {
+chrono::nanoseconds waitTime(int tableEntries) {
 	double RPS = RPM / 60;
-	int nanoSleep = round((RPS / tableEntries) * 1000000000);
-	return nanoSleep;
+	//cout << RPS << "\n" << (RPS / tableEntries) << "\n";
+	chrono::nanoseconds myTime(long long(round(1000000000 / (RPS * tableEntries))));
+	//cout << myTime.count() <<"\n";
+	return myTime;
 }
+	
 
-void CPS(toneWheel tw, int sleepTime) {
+void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 	while (true) {
 		int tooth = 1;
 		for (int i = 0; i < 720; i++) {
