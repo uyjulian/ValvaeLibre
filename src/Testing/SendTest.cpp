@@ -9,6 +9,7 @@
 #include<algorithm>
 using namespace std;
 
+
 int networking_test() {
 	WSADATA wsaData;
 	WSAStartup(MAKEWORD(2, 2), &wsaData);
