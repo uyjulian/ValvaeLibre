@@ -110,6 +110,55 @@
           "run" : "cmake --build build"
         }
       ]
+    },
+    "build-ubuntu-pico" : {
+      "runs-on" : "ubuntu-20.04",
+      "timeout-minutes" : 20,
+      "steps" : [
+        {
+          "name" : "Checkout repository and submodules recursively",
+          "uses" : "actions/checkout@v2",
+          "with" : {
+            "submodules" : "recursive"
+          }
+        },
+        {
+          "name" : "Update APT information",
+          "run" : "sudo apt-get update"
+        },
+        {
+          "name" : "Install required dependencies",
+          "run" : "sudo apt-get install build-essential cmake ninja-build"
+        },
+        {
+          "name" : "Install required dependencies for Raspberry Pi Pico target",
+          "run" : "sudo apt-get install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib"
+        },
+        {
+          "name" : "Set environment variable PICO_PATH for Raspberry Pi Pico",
+          "run" : "echo \"PICO_PATH=${{ env.HOME }}/pico\" >> $GITHUB_ENV"
+        },
+        {
+          "name" : "Set environment variable PICO_SDK_PATH for Raspberry Pi Pico",
+          "run" : "echo \"PICO_SDK_PATH=${{ env.PICO_PATH }}/pico-sdk/\" >> $GITHUB_ENV"
+        },
+        {
+          "name" : "Make directory for Pico path",
+          "run" : "mkdir -p $PICO_PATH"
+        },
+        {
+          "name" : "Clone Raspberry Pi Pico SDK",
+          "run" : "git clone -b master --recursive https://github.com/raspberrypi/pico-sdk.git $PICO_SDK_PATH"
+        },
+        {
+          "name" : "Configure project",
+          "run" : "cmake -S . -B build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DTARGET_RASPI_PICO=ON"
+        },
+        {
+          "name" : "Build project",
+          "run" : "cmake --build build"
+        }
+      ]
     }
   }
 }
