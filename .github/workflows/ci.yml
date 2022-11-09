@@ -136,7 +136,7 @@
         },
         {
           "name" : "Set environment variable PICO_PATH for Raspberry Pi Pico",
-          "run" : "echo \"PICO_PATH=${{ env.HOME }}/pico\" >> $GITHUB_ENV"
+          "run" : "echo \"PICO_PATH=$(pwd)/pico\" >> $GITHUB_ENV"
         },
         {
           "name" : "Set environment variable PICO_SDK_PATH for Raspberry Pi Pico",
