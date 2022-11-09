@@ -60,6 +60,56 @@
           "run" : "cmake --build build"
         }
       ]
+    },
+    "build-ubuntu-win32" : {
+      "runs-on" : "ubuntu-20.04",
+      "timeout-minutes" : 20,
+      "strategy" : {
+        "fail-fast" : false,
+        "matrix" : {
+          "platform" : [
+            {
+              "triplet" : "i686-w64-mingw32",
+              "cmake-system-compiler" : "i686",
+              "compiler" : "gcc"
+            },
+            {
+              "triplet" : "x86_64-w64-mingw32",
+              "cmake-system-compiler" : "amd64",
+              "compiler" : "gcc"
+            }
+          ]
+        }
+      },
+      "steps" : [
+        {
+          "name" : "Checkout repository and submodules recursively",
+          "uses" : "actions/checkout@v2",
+          "with" : {
+            "submodules" : "recursive"
+          }
+        },
+        {
+          "name" : "Update APT information",
+          "run" : "sudo apt-get update"
+        },
+        {
+          "name" : "Install required dependencies",
+          "run" : "sudo apt-get install build-essential cmake ninja-build"
+        },
+        {
+          "name" : "Install required dependencies for mingw-w64",
+          "run" : "sudo apt-get install mingw-w64"
+        },
+        {
+          "name" : "Configure project",
+          "run" : "cmake -S . -B build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.platform.cmake-system-compiler }} -DCMAKE_FIND_ROOT_PATH=/dev/null -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY -DCMAKE_C_COMPILER=${{ matrix.platform.triplet }}-gcc -DCMAKE_CXX_COMPILER=${{ matrix.platform.triplet }}-g++ -DCMAKE_RC_COMPILER=${{ matrix.platform.triplet }}-windres"
+        },
+        {
+          "name" : "Build project",
+          "run" : "cmake --build build"
+        }
+      ]
     }
   }
 }
