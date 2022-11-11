@@ -39,7 +39,7 @@ set(program1_SRC
 set(program1_NAME program1)
 add_executable(${program1_NAME})
 
-target_sources(${program1_NAME} PRIVATE ${program1_SRC} "src/VCP.cpp")
+target_sources(${program1_NAME} PRIVATE ${program1_SRC})
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
@@ -64,7 +64,7 @@ set(program2_SRC
 set(program2_NAME program2)
 add_executable(${program2_NAME})
 
-target_sources(${program2_NAME} PRIVATE ${program2_SRC} "src/VCP.cpp")
+target_sources(${program2_NAME} PRIVATE ${program2_SRC})
 
 
 if(TARGET_RASPI_PICO)
@@ -89,7 +89,7 @@ set(program3_SRC
 set(program3_NAME engineSim)
 add_executable(${program3_NAME})
 
-target_sources(${program3_NAME} PRIVATE ${program3_SRC} "src/VCP.cpp")
+target_sources(${program3_NAME} PRIVATE ${program3_SRC})
 
 
 if(TARGET_RASPI_PICO)
@@ -114,7 +114,7 @@ set(input_from_gpio_sample_SRC
 set(input_from_gpio_sample_NAME input_from_gpio_sample)
 add_executable(${input_from_gpio_sample_NAME})
 
-target_sources(${input_from_gpio_sample_NAME} PRIVATE ${input_from_gpio_sample_SRC} "src/VCP.cpp")
+target_sources(${input_from_gpio_sample_NAME} PRIVATE ${input_from_gpio_sample_SRC})
 
 
 if(TARGET_RASPI_PICO)
