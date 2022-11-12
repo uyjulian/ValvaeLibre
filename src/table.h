@@ -1,17 +1,11 @@
 #ifndef __TABLE_H__ 
 #define __TABLE_H__
 
-namespace masks {
-	const unsigned BIT_32_MASK = 1 << 31;
-	const unsigned BIT_31_MASK = 1 << 30;
-	const unsigned BIT_30_MASK = 1 << 29;
-	const unsigned BIT_29_MASK = 1 << 28;
+#include <stdio.h>
+#define __STDIO_H__
 
-	const unsigned BIT_16_MASK = 1 << 15;
-	const unsigned BIT_15_MASK = 1 << 14;
-	const unsigned BIT_14_MASK = 1 << 13;
-	const unsigned BIT_13_MASK = 1 << 12;
-}
+#include <cstdlib>
+#define  __CSTDLIB__
 
 struct ValveTable {
 	const unsigned int* table;
@@ -21,4 +15,16 @@ struct ValveTable {
 
 extern ValveTable test_table;
 
-#endif
+static inline bool check_bit(unsigned char bit, unsigned short angle) {
+	if (angle > 719) {
+		printf("\"angle\" value must be less than 720!");
+		exit(EXIT_FAILURE);
+	}
+	if (bit > 31) {
+		printf("\"bit\" value must be less than 32!");
+		exit(EXIT_FAILURE);
+	}
+	return test_table.table[angle] & (1 << bit);
+};
+
+#endif // !__TABLE_H__
