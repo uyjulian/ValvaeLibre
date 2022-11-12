@@ -99,6 +99,9 @@ int main() {
 			else {
 				temp = signal_length;
 			}
+			rpm = (elapsed / temp) * rpm;
+			signal_length = ((35.0 * 2 / 360.0) / (rpm / 60.0)) * 1000000.0;
+			signal_length_3 = signal_length * 3;
 			average_latency += elapsed.count() - temp;
 			latency_count++;
 			teeth_gap_start = system_clock::now();
