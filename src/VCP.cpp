@@ -103,7 +103,7 @@ int main() {
 		ReadFile(CPS_pipe, chBuf, 512 * sizeof(TCHAR), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
 		elapsed = system_clock::now() - teeth_gap_start;
 		angle = start_angle + (elapsed.count() / temp * 5.0);
-		WriteFile(valve_pipe,table[angle],cbToWrite,&cbWritten,NULL); // SENDING table[angle] TO CPS
+		WriteFile(valve_pipe,angle,cbToWrite,&cbWritten,NULL); // SENDING angle TO CPS
 		if (chBuf[0] != start_signal) {
 			if (gaps_locations[teeth_gap_passed]) {
 				temp = signal_length_3;
