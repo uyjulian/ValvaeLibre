@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
-#include <Windows.h>
+#include <windows.h>
 #include <tchar.h>
 #include <stdio.h>
 #include <chrono>
@@ -46,6 +46,7 @@ chrono::nanoseconds waitTime(int);
 void CPS(toneWheel, chrono::nanoseconds);
 void winConnect();
 void testing();
+void sendSignal();
 
 int main(int ac, char** av)
 {
@@ -68,7 +69,7 @@ int main(int ac, char** av)
 chrono::nanoseconds waitTime(int tableEntries) {
 	double RPS = RPM / 60;
 	//cout << RPS << "\n" << (RPS / tableEntries) << "\n";
-	chrono::nanoseconds myTime(long long(round(1000000000 / ((RPS / 2) * tableEntries))));
+	chrono::nanoseconds myTime((long long)round(1000000000 / ((RPS / 2) * tableEntries)));
 	cout << myTime.count() << "\n";
 	return myTime;
 }
@@ -116,6 +117,8 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 				sleep = time < waitTill;
 			}
 			chrono::time_point timeSlept = chrono::steady_clock::now();
+
+			sendSignal();
 
 			if (ROTATION_DEGREE == 360) tooth = 1;
 			if (DEBUG) {
@@ -193,25 +196,25 @@ void testing()
 	int valveData = -1;
 	chrono::time_point valveTimeStamp = chrono::steady_clock::now();
 	long long avgVar = 0;
-
+	long tick = 0;
 
 	while (true) {
-		cpsBuff[0] = SIGNAL;
+		//cpsBuff[0] = SIGNAL;
+		//cout << tick << "\r";
+		//
+		//success = WriteFile(
+		//	cpsPipe,
+		//	cpsBuff,
+		//	1,
+		//	&bytesWritten,
+		//	NULL);
+
+		//if (!success || 1 != bytesWritten)
+		//{
+		//	_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
+		//	break;
+		//}
 		
-
-		success = WriteFile(
-			cpsPipe,
-			cpsBuff,
-			1,
-			&bytesWritten,
-			NULL);
-
-		if (!success || 1 != bytesWritten)
-		{
-			_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
-			break;
-		}
-
 		success = ReadFile(
 			valvePipe,
 			valveBuff,
@@ -239,8 +242,29 @@ void testing()
 			avgVar /= 2;
 		}
 		
-		cout << "Average latency is: " << avgVar << "/r";
+		cout << "Average latency is: " << avgVar << "\r";
+	}
+}
 
+void sendSignal() {
+	HANDLE hHeap = GetProcessHeap();
+	BOOL* cpsBuff = (BOOL*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(BOOL));
+
+	DWORD bytesToWrite = 0, bytesWritten = 0;
+	BOOL success = FALSE;
+
+	cpsBuff[0] = SIGNAL;
+
+	success = WriteFile(
+		cpsPipe,
+		cpsBuff,
+		1,
+		&bytesWritten,
+		NULL);
+
+	if (!success || 1 != bytesWritten)
+	{
+		_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
 	}
 }
 #endif
