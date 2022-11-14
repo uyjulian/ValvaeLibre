@@ -11,6 +11,9 @@
 #include <ratio>
 #include "table.h"
 
+#define BUFFSIZE 512
+#define TIMEOUT 20000
+
 #ifdef COMPILING_FOR_RASPI_PICO
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
@@ -42,19 +45,23 @@ struct toneWheel
 chrono::nanoseconds waitTime(int);
 void CPS(toneWheel, chrono::nanoseconds);
 void winConnect();
+void testing();
 
 int main(int ac, char** av)
 {
-	winConnect();
+	thread connectPipes(winConnect);
 	auto sleepTime = waitTime(720);
 	//cout << sleepTime.count() << "\n";
 	toneWheel toneWheel;
 	//cout << toneWheel.degOfSeperation << "\n" << toneWheel.missingTooth << "\n" << toneWheel.numOfTeeth;
 	//CPS(toneWheel, sleepTime);
+	connectPipes.join();
+
 	thread CPS(CPS, toneWheel, sleepTime);
 	CPS.detach();
 
-	fprintf(stdout, "%s\n", "Hello World from Amazing program 3!");
+
+
 	return 0;
 }
 
@@ -134,8 +141,47 @@ void winConnect() {
 	cpsPipe = CreateNamedPipe(
 		CPSPipeName,
 		PIPE_ACCESS_OUTBOUND,
-		PIPE_TYPE_BYTE |
-		PIPE
-	)
+		PIPE_TYPE_BYTE,
+		PIPE_WAIT,
+		1,
+		BUFFSIZE,
+		TIMEOUT,
+		NULL
+	);
+
+	if (cpsPipe == INVALID_HANDLE_VALUE)
+	{
+		_tprintf(TEXT("CreateNamedPipe failed, GLE=%d.\n"), GetLastError());
+		return;
+	}
+
+	valvePipe = CreateNamedPipe(
+		valvePipeName,
+		PIPE_ACCESS_INBOUND,
+		PIPE_TYPE_BYTE,
+		1,
+		BUFFSIZE,
+		BUFFSIZE,
+		TIMEOUT,
+		NULL
+	);
+
+	if (valvePipe == INVALID_HANDLE_VALUE)
+	{
+		_tprintf(TEXT("CreateNamedPipe failed, GLE=%d.\n"), GetLastError());
+		return;
+	}
+
+	if (ConnectNamedPipe(cpsPipe, NULL)) printf("CPS connected!");
+	else printf("CPS filed!!!");
+
+	if (ConnectNamedPipe(valvePipe, NULL)) printf("Valves connected!");
+	else printf("Valves failed!!!");
+
+
+}
+
+void testing()
+{
 
 }
