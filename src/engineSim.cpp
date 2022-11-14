@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
+#include <Windows.h>
+#include <tchar.h>
+#include <stdio.h>
 #include <chrono>
 #include <thread>
 #include <cmath>
@@ -16,7 +19,11 @@
 int RPM = 60;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
+bool DEBUG = false;
 std::chrono::time_point ENG_TICK_CLOCK = std::chrono::steady_clock::now();
+
+HANDLE cpsPipe = INVALID_HANDLE_VALUE;
+HANDLE valvePipe = INVALID_HANDLE_VALUE;
 
 using namespace std;
 
@@ -26,7 +33,7 @@ using namespace std;
 
 struct toneWheel
 {
-	int numOfTeeth = 35;		
+	int numOfTeeth = 35;
 	int degOfSeperation = 10;	//from leading edge to leading edge
 	int missingTooth = 36;		//expand to multiple later
 
@@ -34,11 +41,11 @@ struct toneWheel
 
 chrono::nanoseconds waitTime(int);
 void CPS(toneWheel, chrono::nanoseconds);
-//void signalOut(int, bool);
-
+void winConnect();
 
 int main(int ac, char** av)
 {
+	winConnect();
 	auto sleepTime = waitTime(720);
 	//cout << sleepTime.count() << "\n";
 	toneWheel toneWheel;
@@ -47,6 +54,7 @@ int main(int ac, char** av)
 	thread CPS(CPS, toneWheel, sleepTime);
 	CPS.detach();
 
+	fprintf(stdout, "%s\n", "Hello World from Amazing program 3!");
 	return 0;
 }
 
@@ -54,10 +62,10 @@ chrono::nanoseconds waitTime(int tableEntries) {
 	double RPS = RPM / 60;
 	//cout << RPS << "\n" << (RPS / tableEntries) << "\n";
 	chrono::nanoseconds myTime(long long(round(1000000000 / ((RPS / 2) * tableEntries))));
-	cout << myTime.count() <<"\n";
+	cout << myTime.count() << "\n";
 	return myTime;
 }
-	
+
 
 void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 	bool on = true;
@@ -101,23 +109,33 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 				sleep = time < waitTill;
 			}
 			chrono::time_point timeSlept = chrono::steady_clock::now();
-			
-			if (ROTATION_DEGREE == 360) tooth = 1;
 
-			cout << setw(4) << ROTATION_DEGREE 
-				<< "  Tooth " << setw(3) << tooth 
-				<< "  Signal " << SIGNAL 
-				<< "  Time Stamp " 
-				<< chrono::duration_cast<chrono::microseconds>(ENG_TICK_CLOCK.time_since_epoch()).count()
-				<< "  Loop time " << chrono::duration_cast<chrono::microseconds>(endLoop.time_since_epoch() - ENG_TICK_CLOCK.time_since_epoch()).count()
-				<< "  Sleep time " << setw(5) << chrono::duration_cast<chrono::microseconds>(timeSlept - endLoop).count()
-				<< "  Write time " << chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - ENG_TICK_CLOCK).count()
-				<< " \n";
+			if (ROTATION_DEGREE == 360) tooth = 1;
+			if (DEBUG) {
+				cout << setw(4) << ROTATION_DEGREE
+					<< "  Tooth " << setw(3) << tooth
+					<< "  Signal " << SIGNAL
+					<< "  Time Stamp "
+					<< chrono::duration_cast<chrono::microseconds>(ENG_TICK_CLOCK.time_since_epoch()).count()
+					<< "  Loop time " << chrono::duration_cast<chrono::microseconds>(endLoop.time_since_epoch() - ENG_TICK_CLOCK.time_since_epoch()).count()
+					<< "  Sleep time " << setw(5) << chrono::duration_cast<chrono::microseconds>(timeSlept - endLoop).count()
+					<< "  Write time " << chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - ENG_TICK_CLOCK).count()
+					<< " \n";
+			}
 			//if (ROTATION_DEGREE == 360) return;
 		}
 	}
 }
 
-//void signlOut(int port,bool on) {
-//	return;
-//}
+void winConnect() {
+	LPTSTR CPSPipeName = TEXT("\\\\.\\pipe\\CPS");
+	LPTSTR valvePipeName = TEXT("\\\\.\\pipe\\Valves");
+
+	cpsPipe = CreateNamedPipe(
+		CPSPipeName,
+		PIPE_ACCESS_OUTBOUND,
+		PIPE_TYPE_BYTE |
+		PIPE
+	)
+
+}
