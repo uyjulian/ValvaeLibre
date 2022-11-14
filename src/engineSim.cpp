@@ -267,4 +267,9 @@ void sendSignal() {
 		_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
 	}
 }
+#else
+int main(int ac, char **av)
+{
+	return 0;
+}
 #endif
