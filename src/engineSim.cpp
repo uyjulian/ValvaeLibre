@@ -183,5 +183,63 @@ void winConnect() {
 
 void testing()
 {
+	HANDLE hHeap = GetProcessHeap();
+	//TCHAR* cpsBuff = (TCHAR*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(TCHAR));
+	BOOL* cpsBuff = (BOOL*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(BOOL));
+	int* valveBuff = (int*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(int));
 
+	DWORD bytesRead = 0, bytesToWrite = 0, bytesWritten = 0;
+	BOOL success = FALSE;
+	int valveData = -1;
+	chrono::time_point valveTimeStamp = chrono::steady_clock::now();
+	long long avgVar = 0;
+
+
+	while (true) {
+		cpsBuff[0] = SIGNAL;
+		
+
+		success = WriteFile(
+			cpsPipe,
+			cpsBuff,
+			1,
+			&bytesWritten,
+			NULL);
+
+		if (!success || 1 != bytesWritten)
+		{
+			_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
+			break;
+		}
+
+		success = ReadFile(
+			valvePipe,
+			valveBuff,
+			BUFFSIZE * sizeof(int),
+			&bytesRead,
+			NULL);
+
+		if ((success && bytesRead == 0) || valveBuff == nullptr) {
+			_tprintf(TEXT("Nothing to read.\n"));
+		}
+		else {
+			if (valveBuff[0] != valveData) {
+				valveData = valveBuff[0];
+				valveTimeStamp = chrono::steady_clock::now();
+			}
+			
+		}
+
+		if (valveData == ROTATION_DEGREE ||
+			valveData == (ROTATION_DEGREE - 360) ||
+			valveData == (ROTATION_DEGREE + 360)
+			) {
+			chrono::duration variance(valveTimeStamp - ENG_TICK_CLOCK);
+			avgVar += variance.count();
+			avgVar /= 2;
+		}
+		
+		cout << "Average latency is: " << avgVar << "/r";
+
+	}
 }
