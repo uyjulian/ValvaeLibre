@@ -1,4 +1,4 @@
-
+#ifdef _WIN32
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
@@ -243,3 +243,4 @@ void testing()
 
 	}
 }
+#endif
