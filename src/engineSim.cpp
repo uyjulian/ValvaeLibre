@@ -57,10 +57,10 @@ int main(int ac, char** av)
 	//CPS(toneWheel, sleepTime);
 	connectPipes.join();
 
-	thread CPS(CPS, toneWheel, sleepTime);
-	CPS.detach();
+ 	thread crankSensor(CPS, toneWheel, sleepTime);
+	crankSensor.detach();
 
-
+	testing();
 
 	return 0;
 }
@@ -142,8 +142,8 @@ void winConnect() {
 		CPSPipeName,
 		PIPE_ACCESS_OUTBOUND,
 		PIPE_TYPE_BYTE,
-		PIPE_WAIT,
 		1,
+		BUFFSIZE,
 		BUFFSIZE,
 		TIMEOUT,
 		NULL
@@ -173,10 +173,10 @@ void winConnect() {
 	}
 
 	if (ConnectNamedPipe(cpsPipe, NULL)) printf("CPS connected!");
-	else printf("CPS filed!!!");
+	else _tprintf(TEXT("CPS connection failed, GLE=%d.\n"), GetLastError());
 
 	if (ConnectNamedPipe(valvePipe, NULL)) printf("Valves connected!");
-	else printf("Valves failed!!!");
+	else _tprintf(TEXT("Valves connection failed, GLE=%d.\n"), GetLastError());
 
 
 }
