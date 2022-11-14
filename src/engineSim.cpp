@@ -1,4 +1,4 @@
-#ifdef _WIN32
+#if defined(_WIN32) && defined(_MSC_VER)
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
