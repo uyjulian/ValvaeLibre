@@ -45,7 +45,7 @@ int main(int ac, char **av)
 	stdio_init_all();
 	gpio_set_irq_enabled_with_callback(2, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_interrupt_handler_callback);
 #endif
-	setbuffer(stdout, NULL, 0);
+	setbuf(stdout, NULL);
 	for (;;)
 	{
 		fwrite(read_from_gpio() != 0 ? "1" : "0", 1, 1, stdout);
