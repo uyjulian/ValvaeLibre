@@ -86,6 +86,7 @@ int main() {
 	// NO GAPS FOUND
 	teeth_gap_passed = 0;
 	teeth_gap_start = system_clock::now();
+	average_latency -= signal_length;
 	while (teeth_gap_passed < 70) {
 #if _WIN32
 		ReadFile(CPS_pipe, chBuf, 512 * sizeof(bool), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
@@ -95,7 +96,6 @@ int main() {
 			teeth_gap_passed++;
 			average_latency += elapsed.count() - temp;
 			latency_count++;
-			cout << "LAT = " << elapsed.count() - temp;
 			start_signal = chBuf[0];
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
 				temp = signal_length_3;
