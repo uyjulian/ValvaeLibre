@@ -22,7 +22,7 @@
 int RPM = 60;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
-bool DEBUG = true;
+bool DEBUG = false;
 std::chrono::time_point ENG_TICK_CLOCK = std::chrono::steady_clock::now();
 
 HANDLE cpsPipe = INVALID_HANDLE_VALUE;
@@ -50,18 +50,20 @@ void sendSignal();
 
 int main(int ac, char** av)
 {
-	//thread connectPipes(winConnect);
+	thread connectPipes(winConnect);
+	
 	auto sleepTime = waitTime(720);
-	//cout << sleepTime.count() << "\n";
+	
 	toneWheel toneWheel;
-	//cout << toneWheel.degOfSeperation << "\n" << toneWheel.missingTooth << "\n" << toneWheel.numOfTeeth;
-	CPS(toneWheel, sleepTime);
-	//connectPipes.join();
+	
+	//CPS(toneWheel, sleepTime);
 
-	//thread crankSensor(CPS, toneWheel, sleepTime);
-	//crankSensor.detach();
+	connectPipes.join();
 
-	//testing();
+	thread crankSensor(CPS, toneWheel, sleepTime);
+	crankSensor.detach();
+
+	testing();
 
 	return 0;
 }
