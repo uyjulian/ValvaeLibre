@@ -3,28 +3,12 @@
   "on" : {
     "push" : {
       "paths" : [
-        "**.c",
-        "**.h",
-        "**.cpp",
-        "**.hpp",
-        "**.build",
-        "**.in",
-        "**.yml",
-        "**.gradle",
-        "CMakeLists.txt"
+        "**"
       ]
     },
     "pull_request" : {
       "paths" : [
-        "**.c",
-        "**.h",
-        "**.cpp",
-        "**.hpp",
-        "**.build",
-        "**.in",
-        "**.yml",
-        "**.gradle",
-        "CMakeLists.txt"
+        "**"
       ]
     }
   },
