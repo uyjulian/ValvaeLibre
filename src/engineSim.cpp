@@ -22,7 +22,7 @@
 int RPM = 60;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
-bool DEBUG = false;
+bool DEBUG = true;
 std::chrono::time_point ENG_TICK_CLOCK = std::chrono::steady_clock::now();
 
 HANDLE cpsPipe = INVALID_HANDLE_VALUE;
@@ -50,25 +50,24 @@ void sendSignal();
 
 int main(int ac, char** av)
 {
-	thread connectPipes(winConnect);
+	//thread connectPipes(winConnect);
 	auto sleepTime = waitTime(720);
 	//cout << sleepTime.count() << "\n";
 	toneWheel toneWheel;
 	//cout << toneWheel.degOfSeperation << "\n" << toneWheel.missingTooth << "\n" << toneWheel.numOfTeeth;
-	//CPS(toneWheel, sleepTime);
-	connectPipes.join();
+	CPS(toneWheel, sleepTime);
+	//connectPipes.join();
 
- 	thread crankSensor(CPS, toneWheel, sleepTime);
-	crankSensor.detach();
+	//thread crankSensor(CPS, toneWheel, sleepTime);
+	//crankSensor.detach();
 
-	testing();
+	//testing();
 
 	return 0;
 }
 
 chrono::nanoseconds waitTime(int tableEntries) {
 	double RPS = RPM / 60;
-	//cout << RPS << "\n" << (RPS / tableEntries) << "\n";
 	chrono::nanoseconds myTime((long long)round(1000000000 / ((RPS / 2) * tableEntries)));
 	cout << myTime.count() << "\n";
 	return myTime;
@@ -76,8 +75,8 @@ chrono::nanoseconds waitTime(int tableEntries) {
 
 
 void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
-	bool on = true;
 	while (true) {
+		bool on = true;
 		int tooth = 1;
 		ROTATION_DEGREE = 0;
 		for (; ROTATION_DEGREE < 720; ++ROTATION_DEGREE) {
@@ -93,10 +92,6 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 				if (tooth == tw.missingTooth) tooth = 0;
 
 			}
-			//if (ROTATION_DEGREE % tw.degOfSeperation != tw.degOfSeperation / 2 && on) {
-			//	on = false;
-			//	if (tooth == tw.missingTooth) tooth = 0;
-			//}
 			if (on && (tooth != tw.missingTooth)) {
 				SIGNAL = true;
 			}
@@ -104,21 +99,16 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 				SIGNAL = false;
 			}
 			chrono::time_point endLoop = chrono::steady_clock::now();
-			//this_thread::sleep_for(chrono::microseconds(1));
 
 			bool sleep = true;
 			while (sleep) {
 				chrono::time_point time = chrono::steady_clock::now();
 				chrono::time_point waitTill = ENG_TICK_CLOCK + sleepTime;
-				//cout << chrono::duration_cast<chrono::nanoseconds>(time.time_since_epoch()).count()
-				//	<< "     "
-				//	<< chrono::duration_cast<chrono::nanoseconds>(waitTill.time_since_epoch()).count()
-				//	<< "\n";
 				sleep = time < waitTill;
 			}
 			chrono::time_point timeSlept = chrono::steady_clock::now();
 
-			sendSignal();
+			if (!DEBUG)sendSignal();
 
 			if (ROTATION_DEGREE == 360) tooth = 1;
 			if (DEBUG) {
@@ -187,7 +177,6 @@ void winConnect() {
 void testing()
 {
 	HANDLE hHeap = GetProcessHeap();
-	//TCHAR* cpsBuff = (TCHAR*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(TCHAR));
 	BOOL* cpsBuff = (BOOL*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(BOOL));
 	int* valveBuff = (int*)HeapAlloc(hHeap, 0, BUFFSIZE * sizeof(int));
 
@@ -199,21 +188,6 @@ void testing()
 	long tick = 0;
 
 	while (true) {
-		//cpsBuff[0] = SIGNAL;
-		//cout << tick << "\r";
-		//
-		//success = WriteFile(
-		//	cpsPipe,
-		//	cpsBuff,
-		//	1,
-		//	&bytesWritten,
-		//	NULL);
-
-		//if (!success || 1 != bytesWritten)
-		//{
-		//	_tprintf(TEXT("InstanceThread WriteFile failed, GLE=%d.\n"), GetLastError());
-		//	break;
-		//}
 		
 		success = ReadFile(
 			valvePipe,
