@@ -22,7 +22,7 @@
 int RPM = 60;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
-bool DEBUG = true;
+bool DEBUG = false;
 std::chrono::time_point ENG_TICK_CLOCK = std::chrono::steady_clock::now();
 
 HANDLE cpsPipe = INVALID_HANDLE_VALUE;
@@ -30,9 +30,6 @@ HANDLE valvePipe = INVALID_HANDLE_VALUE;
 
 using namespace std;
 
-//chrono::nanoseconds waitTime(int);
-//void CPS(toneWheel, chrono::nanoseconds);
-//void signalOut(int, bool);
 
 struct toneWheel
 {
@@ -50,18 +47,18 @@ void sendSignal();
 
 int main(int ac, char** av)
 {
-	//thread connectPipes(winConnect);
+	thread connectPipes(winConnect);
 	auto sleepTime = waitTime(720);
 	//cout << sleepTime.count() << "\n";
 	toneWheel toneWheel;
 	//cout << toneWheel.degOfSeperation << "\n" << toneWheel.missingTooth << "\n" << toneWheel.numOfTeeth;
-	CPS(toneWheel, sleepTime);
-	//connectPipes.join();
+	//CPS(toneWheel, sleepTime);
+	connectPipes.join();
 
-	//thread crankSensor(CPS, toneWheel, sleepTime);
-	//crankSensor.detach();
+	thread crankSensor(CPS, toneWheel, sleepTime);
+	crankSensor.detach();
 
-	//testing();
+	testing();
 
 	return 0;
 }
@@ -80,7 +77,6 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 		int tooth = 1;
 		ROTATION_DEGREE = 0;
 		for (; ROTATION_DEGREE < 720; ++ROTATION_DEGREE) {
-			ENG_TICK_CLOCK = chrono::steady_clock::now();
 
 			if (ROTATION_DEGREE % tw.degOfSeperation < tw.degOfSeperation / 2) {
 				if (!on) tooth++;
@@ -107,6 +103,8 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 				sleep = time < waitTill;
 			}
 			chrono::time_point timeSlept = chrono::steady_clock::now();
+
+			ENG_TICK_CLOCK = chrono::steady_clock::now();
 
 			if (!DEBUG)sendSignal();
 
