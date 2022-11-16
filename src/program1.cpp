@@ -1,15 +1,12 @@
-#include <iostream>
 #include "table.h"
+#include <iostream>
 
 using namespace std;
 
 int main(int ac, char **av)
-{
-	cout << testTable.ra1 << endl;
-
-	for (int i = 0; i < testTable.durationSize; i++) {
-		cout<< testTable.duration[i] << endl;
-	}
-
+{	
+	// cout << check_bit(-1, 719) << endl;
+	// cout << check_bit(31, -719) << endl;
+	cout << check_bit(31, 0) << endl;
 	return 0;
 }
