@@ -81,31 +81,6 @@ if(TARGET_RASPI_PICO)
     target_compile_definitions(${program2_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
-set(program3_SRC
-	src/engineSim.cpp
-    table.cpp
-)
-
-set(program3_NAME engineSim)
-add_executable(${program3_NAME})
-
-target_sources(${program3_NAME} PRIVATE ${program3_SRC})
-
-
-if(TARGET_RASPI_PICO)
-    # pull in common dependencies
-    target_link_libraries(${program3_NAME} pico_stdlib)
-
-    # enable usb output, disable uart output
-    pico_enable_stdio_usb(${program3_NAME} 1)
-    pico_enable_stdio_uart(${program3_NAME} 0)
-
-    # create map/bin/hex/uf2 file etc.
-    pico_add_extra_outputs(${program3_NAME})
-
-    target_compile_definitions(${program3_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
-endif()
-
 set(input_from_gpio_sample_SRC
     src/input_from_gpio_sample.cpp
     table.cpp
@@ -129,4 +104,41 @@ if(TARGET_RASPI_PICO)
     pico_add_extra_outputs(${input_from_gpio_sample_NAME})
 
     target_compile_definitions(${input_from_gpio_sample_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
+endif()
+
+if(WIN32)
+
+set(engineSim_SRC
+    src/engineSim.cpp
+    table.cpp
+)
+
+set(engineSim_NAME engineSim)
+add_executable(${engineSim_NAME})
+
+target_sources(${engineSim_NAME} PRIVATE ${engineSim_SRC})
+
+set(VCP_SRC
+    src/VCP.cpp
+    table.cpp
+)
+
+set(VCP_NAME VCP)
+add_executable(${VCP_NAME})
+
+target_sources(${VCP_NAME} PRIVATE ${VCP_SRC})
+
+set(run_both_programs_SRC
+    src/run_both_programs.cpp
+)
+
+set(run_both_programs_NAME run_both_programs)
+add_executable(${run_both_programs_NAME})
+
+target_link_libraries(${run_both_programs_NAME} shlwapi.lib)
+
+target_sources(${run_both_programs_NAME} PRIVATE ${run_both_programs_SRC})
+
+add_dependencies(${run_both_programs_NAME} ${engineSim_NAME} ${VCP_NAME})
+
 endif()
