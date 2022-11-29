@@ -20,7 +20,7 @@ set<short> gaps_locations;
 bool start_signal;
 time_point<steady_clock> teeth_gap_start, guess, last_big_gap;
 duration<long long int, ratio<1, 1000000000>> elapsed;
-long long signal_length, signal_length_2, signal_length_3, full_rotation, temp, temp_2, temp_3, rpm;
+long long signal_length, signal_length_2, signal_length_3, signal_length_6, signal_length_3_2, signal_length_1_2, full_rotation, temp, temp_2, temp_3, rpm;
 short teeth_gap_passed, angle, start_angle;
 #ifdef _WIN32
 HANDLE valve_pipe, CPS_pipe;
@@ -42,6 +42,14 @@ void gpio_interrupt_handler_callback(uint gpio, uint32_t events)
 		chBuf = true;
 	}
 }
+void blink_error() {
+	while (true) {
+		gpio_put(LED_PIN, 0);
+		sleep_ms(200);
+		gpio_put(LED_PIN, 1);
+		sleep_ms(200);
+	}
+}
 #endif
 
 int main() {
@@ -50,6 +58,9 @@ int main() {
 	signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0; // Value in nanoseconds
 	signal_length_2 = signal_length * 2;
 	signal_length_3 = signal_length * 3;
+	signal_length_1_2 = signal_length / 2;
+	signal_length_3_2 = signal_length_3 / 2;
+	signal_length_6 = signal_length_3 * 2;
 	full_rotation = signal_length * 35 + signal_length * 34 + signal_length_3;
 	teeth_gap_passed = 0;
 	temp_3 = 5;
@@ -63,7 +74,8 @@ int main() {
 	stdio_init_all();
 	gpio_set_irq_enabled_with_callback(28, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_interrupt_handler_callback); //INTERRUPT IMMEDIATELY READS IF SOMETHING CHANGES
 	chBuf = false;
-	ignore_bit = ~(1 << 28);
+	ignore_bit = ~(1 << 28) && ~(1 << 25);
+	gpio_set_dir(28, GPIO_IN);
 #endif
 	while (true) {
 #if _WIN32
@@ -167,7 +179,7 @@ int main() {
 	while (true) {
 #if _WIN32
 		elapsed = steady_clock::now() - teeth_gap_start;
-		angle = (short)round(start_angle + (((elapsed.count() / temp)) * temp_3)) % 720;
+		angle = (short)(start_angle + (((elapsed.count() / temp)) * temp_3)) % 720;
 		//cout << "START RPM: " << rpm << " LATENCY: " << temp_2 << " ANGLE: " << angle << " TEETH PASSED: " << teeth_gap_passed << " buf: " << chBuf[0] << endl;
 		cout << average_latency / latency_count << "          | " << angle << "          \r";
 		ReadFile(CPS_pipe, chBuf, 512 * sizeof(bool), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
@@ -185,6 +197,11 @@ int main() {
 				rpm *= (temp_2 / temp) + 1;
 				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0;
 				signal_length_3 = signal_length * 3;
+				signal_length_1_2 = signal_length / 2;
+				signal_length_3_2 = signal_length_3 / 2;
+				signal_length_2 = signal_length * 2;
+				signal_length_6 = signal_length_3 * 2;
+
 			}
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
 				temp = signal_length_3;
@@ -198,7 +215,7 @@ int main() {
 		}
 #else
 		elapsed = steady_clock::now() - teeth_gap_start;
-		angle = (short)round(start_angle + (((elapsed.count() / temp)) * temp_3)) % 720;
+		angle = (short)(start_angle + (((elapsed.count() / temp)) * temp_3)) % 720;
 		gpio_set_mask(test_table.table[angle] && ignore_bit);
 		gpio_clr_mask(~test_table.table[angle] && ignore_bit);
 		if (chBuf != start_signal) {
@@ -207,13 +224,26 @@ int main() {
 			start_angle = (start_angle + temp_3) % 720;
 			angle = start_angle;
 			temp_2 = elapsed.count() - temp;
-			average_latency += temp_2;
-			latency_count++;
+			if (temp = signal_length_3) {
+				if (temp_2 > signal_length_6 || temp_2 < signal_length_3_2) {
+					blink_error();
+				}
+			}
+			else {
+				if (temp_2 > signal_length_2 || temp_2 < signal_length_1_2) {
+					blink_error();
+				}
+			}
 			teeth_gap_passed = (teeth_gap_passed + 1) % 70;
 			if (-1000000 > temp_2 || temp_2 > 1000000) {
 				rpm *= (temp_2 / temp) + 1;
 				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0;
 				signal_length_3 = signal_length * 3;
+				signal_length_1_2 = signal_length / 2;
+				signal_length_3_2 = signal_length_3 / 2;
+				signal_length_2 = signal_length * 2;
+				signal_length_6 = signal_length_3 * 2;
+
 			}
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
 				temp = signal_length_3;
@@ -223,7 +253,7 @@ int main() {
 				temp = signal_length;
 				temp_3 = 5;
 			}
-			start_signal = chBuf;
+			start_signal = chBuf[0];
 		}
 #endif
 	}
