@@ -95,7 +95,6 @@ function storeFunc()
         parseInt(fire_order_str.split(",")[2]),
         parseInt(fire_order_str.split(",")[3])
     ]
-    alert(fire_order);
 
     var num_cylinders;
     var r1 = document.getElementById("radio_1").checked;
