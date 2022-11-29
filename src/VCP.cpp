@@ -47,6 +47,8 @@ void gpio_interrupt_handler_callback(uint gpio, uint32_t events)
 
 int main() {
 	// OFF:
+	ios::sync_with_stdio(false);
+
 	rpm = 60.0; // Replace this with whatever the starting value is
 	signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000.0; // Value in microseconds
 	signal_length_2 = signal_length * 2;
