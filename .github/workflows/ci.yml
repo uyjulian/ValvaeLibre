@@ -74,16 +74,17 @@
           }
         },
         {
-          "name" : "Update APT information",
-          "run" : "sudo apt-get update"
+          "name" : "Set up Homebrew environment for Github Actions",
+          "run" : "echo \"/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin\" >> $GITHUB_PATH"
         },
         {
-          "name" : "Install required dependencies",
-          "run" : "sudo apt-get install build-essential cmake ninja-build"
+          "name" : "Set up default build tools",
+          "run" : "brew install make nasm cmake ninja"
         },
         {
-          "name" : "Install required dependencies for mingw-w64",
-          "run" : "sudo apt-get install mingw-w64"
+          "name" : "Set up mingw-w64 for GCC",
+          "if" : "matrix.platform.compiler == 'gcc'",
+          "run" : "brew install mingw-w64"
         },
         {
           "name" : "Configure project",
