@@ -25,7 +25,7 @@ long long signal_length, signal_length_2, signal_length_3, full_rotation, temp, 
 short teeth_gap_passed, angle, start_angle;
 #ifdef _WIN32
 HANDLE valve_pipe, CPS_pipe;
-long long average_latency, latency_count
+long long average_latency, latency_count;
 bool  chBuf[512];
 DWORD  cbRead, cbToWrite, cbWritten, dwMode;
 LPTSTR valve_pipe_name, CPS_pipe_name;
