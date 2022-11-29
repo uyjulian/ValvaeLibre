@@ -19,9 +19,8 @@ using namespace std::chrono;
 set<short> gaps_locations;
 bool start_signal;
 time_point<steady_clock> teeth_gap_start, guess, last_big_gap;
-duration<double, ratio<1, 1000000>> elapsed;
-double rpm, temp_2;
-long long signal_length, signal_length_2, signal_length_3, full_rotation, temp, temp_3;
+duration<long long int, ratio<1, 1000000000>> elapsed;
+long long signal_length, signal_length_2, signal_length_3, full_rotation, temp, temp_2, temp_3, rpm;
 short teeth_gap_passed, angle, start_angle;
 #ifdef _WIN32
 HANDLE valve_pipe, CPS_pipe;
@@ -48,15 +47,15 @@ void gpio_interrupt_handler_callback(uint gpio, uint32_t events)
 int main() {
 	// OFF:
 	rpm = 60.0; // Replace this with whatever the starting value is
-	signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000.0; // Value in microseconds
+	signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0; // Value in nanoseconds
 	signal_length_2 = signal_length * 2;
 	signal_length_3 = signal_length * 3;
 	full_rotation = signal_length * 35 + signal_length * 34 + signal_length_3;
 	teeth_gap_passed = 0;
-	average_latency = 0;
-	latency_count = 0;
 	temp_3 = 5;
 #if _WIN32
+	average_latency = 0;
+	latency_count = 0;
 	valve_pipe_name = TEXT("\\\\.\\pipe\\Valves");
 	CPS_pipe_name = TEXT("\\\\.\\pipe\\CPS");
 	cbToWrite = 4;
@@ -113,7 +112,7 @@ int main() {
 	// NO GAPS FOUND
 	if (gaps_locations.size() == 0) {
 		gaps_locations.insert(0);
-		last_big_gap = steady_clock::now() - (microseconds(full_rotation) - microseconds(signal_length_3));
+		last_big_gap = steady_clock::now() - (nanoseconds(full_rotation) - nanoseconds(signal_length_3));
 	}
 	// NO GAPS FOUND
 	teeth_gap_passed = 0;
@@ -152,6 +151,7 @@ int main() {
 			else {
 				temp = signal_length;
 			}
+		}
 #endif
 	}
 	cout << "AVERAGE LATENCY DURING SETUP: " << average_latency / latency_count << endl;
@@ -181,9 +181,9 @@ int main() {
 			average_latency += temp_2;
 			latency_count++;
 			teeth_gap_passed = (teeth_gap_passed + 1) % 70;
-			if (-1000 > temp_2 || temp_2 > 1000) {
+			if (-1000000 > temp_2 || temp_2 > 1000000) {
 				rpm *= (temp_2 / temp) + 1;
-				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000.0;
+				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0;
 				signal_length_3 = signal_length * 3;
 			}
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
@@ -210,9 +210,9 @@ int main() {
 			average_latency += temp_2;
 			latency_count++;
 			teeth_gap_passed = (teeth_gap_passed + 1) % 70;
-			if (-1000 > temp_2 || temp_2 > 1000) {
+			if (-1000000 > temp_2 || temp_2 > 1000000) {
 				rpm *= (temp_2 / temp) + 1;
-				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000.0;
+				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0;
 				signal_length_3 = signal_length * 3;
 			}
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
