@@ -67,7 +67,7 @@ int main(int ac, char** av)
 }
 
 chrono::nanoseconds waitTime(int tableEntries) {
-	double RPS = RPM / 60;
+	double RPS = RPM / 60.0;
 	//cout << RPS << "\n" << (RPS / tableEntries) << "\n";
 	chrono::nanoseconds myTime((long long)round(1000000000 / ((RPS / 2) * tableEntries)));
 	cout << myTime.count() << "\n";
