@@ -88,14 +88,6 @@ function storeFunc()
 
     var ra_ratio = document.getElementById("ra_ratio").value;
 
-    var fire_order_str = document.getElementById("fire_order").value;
-    var fire_order = [
-        parseInt(fire_order_str.split(",")[0]),
-        parseInt(fire_order_str.split(",")[1]),
-        parseInt(fire_order_str.split(",")[2]),
-        parseInt(fire_order_str.split(",")[3])
-    ]
-
     var num_cylinders;
     var r1 = document.getElementById("radio_1").checked;
     var r2 = document.getElementById("radio_2").checked;
@@ -103,7 +95,14 @@ function storeFunc()
     if (r1) num_cylinders = 4;
     else if (r2) num_cylinders = 6;
     else if (r3) num_cylinders = 8;
-    
+
+    var fire_order_str = document.getElementById("fire_order").value;
+    var fire_order = []
+
+    for (i = 0; i < num_cylinders; i++) {
+        fire_order.push(parseInt(fire_order_str.split(",")[i]))
+    }
+
     var spec1 = document.getElementById("specifier1").value;
     var spec2 = document.getElementById("specifier2").value;
     var spec3 = document.getElementById("specifier3").value;
@@ -132,4 +131,39 @@ function storeFunc()
         fire_order);
 
     return 0;
+}
+
+function cyl_change_dropdown()
+{
+    var r1 = document.getElementById("radio_1").checked;
+    var r2 = document.getElementById("radio_2").checked;
+    var r3 = document.getElementById("radio_3").checked;
+
+    if (r1) {
+        //alert("R1!");
+        let newOption = new Option("1342", "1,3,4,2");
+        const select = document.querySelector('#fire_order');
+        while (select.options.length > 0) {
+            select.remove(0);
+        }
+        select.add(newOption, undefined);
+    } else if (r2) {
+        //alert("R2!");
+        let newOption = new Option("153624", "1,5,3,6,2,4");
+        const select = document.querySelector('#fire_order');
+        while (select.options.length > 0) {
+            select.remove(0);
+        }
+        select.add(newOption, undefined);
+    } else if (r3) {
+        //alert("R3!");
+        let newOption = new Option("14738526", "1,4,7,3,8,5,2,6");
+        const select = document.querySelector('#fire_order');
+        while (select.options.length > 0) {
+            select.remove(0);
+        }
+        select.add(newOption, undefined);
+    } else {
+        alert("What?");
+    }
 }
