@@ -57,11 +57,11 @@ endif()
 
 
 set(program2_SRC
-	src/picoEsim.cpp
+	src/program2.cpp
     table.cpp
 )
 
-set(program2_NAME picoEsim)
+set(program2_NAME program2)
 add_executable(${program2_NAME})
 
 target_sources(${program2_NAME} PRIVATE ${program2_SRC})
@@ -69,7 +69,7 @@ target_sources(${program2_NAME} PRIVATE ${program2_SRC})
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
-    target_link_libraries(${program2_NAME} pico_stdlib pico_multicore hardware_timer)
+    target_link_libraries(${program2_NAME} pico_stdlib)
 
     # enable usb output, disable uart output
     pico_enable_stdio_usb(${program2_NAME} 1)
@@ -94,7 +94,7 @@ target_sources(${input_from_gpio_sample_NAME} PRIVATE ${input_from_gpio_sample_S
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
-    target_link_libraries(${input_from_gpio_sample_NAME} pico_stdlib pico_multicore)
+    target_link_libraries(${input_from_gpio_sample_NAME} pico_stdlib)
 
     # enable usb output, disable uart output
     pico_enable_stdio_usb(${input_from_gpio_sample_NAME} 1)
@@ -106,9 +106,6 @@ if(TARGET_RASPI_PICO)
     target_compile_definitions(${input_from_gpio_sample_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
-
-
-if(WIN32)
 set(VCP_SRC
     src/VCP.cpp
     table.cpp
@@ -121,7 +118,7 @@ target_sources(${VCP_NAME} PRIVATE ${VCP_SRC})
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
-    target_link_libraries(${VCP_NAME} pico_stdlib pico_multicore)
+    target_link_libraries(${VCP_NAME} pico_stdlib)
 
     # enable usb output, disable uart output
     pico_enable_stdio_usb(${VCP_NAME} 1)
@@ -132,6 +129,9 @@ if(TARGET_RASPI_PICO)
 
     target_compile_definitions(${VCP_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
+
+
+if(WIN32)
 
 set(engineSim_SRC
     src/engineSim.cpp
@@ -158,4 +158,3 @@ target_sources(${run_both_programs_NAME} PRIVATE ${run_both_programs_SRC})
 add_dependencies(${run_both_programs_NAME} ${engineSim_NAME} ${VCP_NAME})
 
 endif()
-
