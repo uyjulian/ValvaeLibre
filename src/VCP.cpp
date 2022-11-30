@@ -44,9 +44,9 @@ void gpio_interrupt_handler_callback(uint gpio, uint32_t events)
 }
 void blink_error() {
 	while (true) {
-		gpio_put(LED_PIN, 0);
+		gpio_put(PICO_DEFAULT_LED_PIN, 0);
 		sleep_ms(200);
-		gpio_put(LED_PIN, 1);
+		gpio_put(PICO_DEFAULT_LED_PIN, 1);
 		sleep_ms(200);
 	}
 }
@@ -74,7 +74,7 @@ int main() {
 	stdio_init_all();
 	gpio_set_irq_enabled_with_callback(28, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_interrupt_handler_callback); //INTERRUPT IMMEDIATELY READS IF SOMETHING CHANGES
 	chBuf = false;
-	ignore_bit = ~(1 << 28) && ~(1 << 25);
+	ignore_bit = ~(1 << 28) && ~(1 << PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(28, GPIO_IN);
 #endif
 	while (true) {
