@@ -112,11 +112,8 @@ int main() {
 	cout << "CURRENT AVERAGE LATENCY | CURRENT SENDING:" << endl << "\r";
 	// SEND + VERIFY:
 	// WILL BE REFORMATTED FOR PROPER FILE
-	for (auto& element : gaps_locations) {
-		auto hold = element;
-		gaps_locations.erase(element);
-		gaps_locations.insert(69);
-	}
+	gaps_locations.erase(*gaps_locations.begin());
+	gaps_locations.insert(69);
 	elapsed = system_clock::now() - last_big_gap;
 	teeth_gap_passed = ((elapsed.count() - signal_length_3) / signal_length);
 	start_angle = teeth_gap_passed * 5;
