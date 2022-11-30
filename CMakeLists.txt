@@ -106,6 +106,9 @@ if(TARGET_RASPI_PICO)
     target_compile_definitions(${input_from_gpio_sample_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
+
+
+if(WIN32)
 set(VCP_SRC
     src/VCP.cpp
     table.cpp
@@ -129,8 +132,6 @@ if(TARGET_RASPI_PICO)
 
     target_compile_definitions(${VCP_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
-
-if(WIN32)
 
 set(engineSim_SRC
     src/engineSim.cpp
