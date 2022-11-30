@@ -12,7 +12,7 @@ static int create_process(PROCESS_INFORMATION *pi, WCHAR *executable_name)
 	memset(&si, 0, sizeof(si));
 	memset(pi, 0, sizeof(*pi));
 	si.cb = sizeof(si);
-	if (CreateProcessW(executable_name, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, NULL, &si, pi) == FALSE)
+	if (CreateProcessW(executable_name, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED | CREATE_NEW_CONSOLE, NULL, NULL, &si, pi) == FALSE)
 	{
 		return 1;
 	}
