@@ -8,12 +8,12 @@
 
 
 
-#ifdef COMPILING_FOR_RASPI_PICO
+//#ifdef COMPILING_FOR_RASPI_PICO
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 //#include "pico/multicore.h"
-#else
-#endif
+//#else
+//#endif
 
 struct toneWheel
 {
@@ -27,6 +27,8 @@ int RPM = 60;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
 std::chrono::time_point<std::chrono::steady_clock> ENG_TICK_CLOCK = std::chrono::steady_clock::now();
+uint LED_PIN = PICO_DEFAULT_LED_PIN;
+uint CPS_PIN = 28;
 
 std::chrono::nanoseconds waitTime(int);
 void CPS(toneWheel, std::chrono::nanoseconds);
@@ -34,6 +36,11 @@ void sendSignal();
 
 int main()
 {
+	gpio_init(CPS_PIN);
+	gpio_init(LED_PIN);
+	gpio_set_dir(CPS_PIN, 1);
+	gpio_set_dir(LED_PIN, 1);
+	gpio_put(LED_PIN, 1);
 	std::chrono::nanoseconds sleepTime = waitTime(720);
 	toneWheel toneWheel;
 	CPS(toneWheel, sleepTime);
@@ -47,8 +54,8 @@ std::chrono::nanoseconds waitTime(int tableEntries) {
 }
 
 void CPS(toneWheel tw, std::chrono::nanoseconds sleepTime) {
-	bool on = true;
 	while (true) {
+		bool on = true;
 		int tooth = 1;
 		ROTATION_DEGREE = 0;
 		for (; ROTATION_DEGREE < 720; ++ROTATION_DEGREE) {
@@ -106,10 +113,10 @@ void CPS(toneWheel tw, std::chrono::nanoseconds sleepTime) {
 }
 
 void sendSignal() {
-#ifdef COMPILING_FOR_RASPI_PICO
-	gpio_put((uint32_t)28, SIGNAL);
-	gpio_put((uint32_t)25, SIGNAL);
-#endif // COMPILING_FOR_RASPI_PICO
+//#ifdef COMPILING_FOR_RASPI_PICO
+	gpio_put(CPS_PIN, SIGNAL);
+	gpio_put(LED_PIN, SIGNAL);
+////#endif // COMPILING_FOR_RASPI_PICO
 
 
 	

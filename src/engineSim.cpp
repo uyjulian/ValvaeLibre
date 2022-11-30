@@ -19,10 +19,10 @@
 #include "hardware/gpio.h"
 #endif
 
-int RPM = 60;
+int RPM = 6;
 int ROTATION_DEGREE = 0;
 bool SIGNAL = true;
-bool DEBUG = false;
+bool DEBUG = true;
 std::chrono::time_point ENG_TICK_CLOCK = std::chrono::steady_clock::now();
 
 HANDLE cpsPipe = INVALID_HANDLE_VALUE;
@@ -55,13 +55,13 @@ int main(int ac, char** av)
 	//cout << sleepTime.count() << "\n";
 	toneWheel toneWheel;
 	//cout << toneWheel.degOfSeperation << "\n" << toneWheel.missingTooth << "\n" << toneWheel.numOfTeeth;
-	//CPS(toneWheel, sleepTime);
-	connectPipes.join();
+	CPS(toneWheel, sleepTime);
+	//connectPipes.join();
 
- 	thread crankSensor(CPS, toneWheel, sleepTime);
-	crankSensor.detach();
+ //	thread crankSensor(CPS, toneWheel, sleepTime);
+	//crankSensor.detach();
 
-	testing();
+	//testing();
 
 	return 0;
 }
@@ -76,8 +76,8 @@ chrono::nanoseconds waitTime(int tableEntries) {
 
 
 void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
-	bool on = true;
 	while (true) {
+		bool on = true;
 		int tooth = 1;
 		ROTATION_DEGREE = 0;
 		for (; ROTATION_DEGREE < 720; ++ROTATION_DEGREE) {
@@ -118,7 +118,7 @@ void CPS(toneWheel tw, chrono::nanoseconds sleepTime) {
 			}
 			chrono::time_point timeSlept = chrono::steady_clock::now();
 
-			sendSignal();
+			//sendSignal();
 
 			if (ROTATION_DEGREE == 360) tooth = 1;
 			if (DEBUG) {
