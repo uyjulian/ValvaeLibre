@@ -6,12 +6,13 @@
 #include <ratio>
 #include <cmath>
 
+
+
 #ifdef COMPILING_FOR_RASPI_PICO
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 //#include "pico/multicore.h"
 #else
-//#include <unistd.h>
 #endif
 
 struct toneWheel
@@ -105,5 +106,7 @@ void CPS(toneWheel tw, std::chrono::nanoseconds sleepTime) {
 }
 
 void sendSignal() {
+	gpio_put((uint32_t)28, SIGNAL);
+	gpio_put((uint32_t)25, SIGNAL);
 	
 }
