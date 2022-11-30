@@ -106,7 +106,11 @@ void CPS(toneWheel tw, std::chrono::nanoseconds sleepTime) {
 }
 
 void sendSignal() {
+#ifdef COMPILING_FOR_RASPI_PICO
 	gpio_put((uint32_t)28, SIGNAL);
 	gpio_put((uint32_t)25, SIGNAL);
+#endif // COMPILING_FOR_RASPI_PICO
+
+
 	
 }
