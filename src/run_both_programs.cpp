@@ -16,6 +16,10 @@ static int create_process(PROCESS_INFORMATION *pi, WCHAR *executable_name)
 	{
 		return 1;
 	}
+	if (SetPriorityClass(pi->hProcess, REALTIME_PRIORITY_CLASS) == FALSE)
+	{
+		return 1;
+	}
 	return 0;
 }
 
