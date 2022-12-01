@@ -8,7 +8,7 @@
 #include <windows.h> 
 #include <iostream>
 #include <stdlib.h>
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #endif
@@ -27,7 +27,7 @@ long long average_latency, latency_count;
 bool  chBuf[512];
 DWORD  cbRead, cbToWrite, cbWritten, dwMode;
 LPTSTR valve_pipe_name, CPS_pipe_name;
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 duration<int, ratio<1, 1000000000>> elapsed;
 int signal_length, signal_length_2, signal_length_3, signal_length_6, signal_length_3_2, signal_length_1_2, full_rotation, temp, temp_2, temp_3, rpm, teeth_gap_passed, angle, start_angle, late_count;
 bool volatile chBuf;
@@ -44,6 +44,7 @@ void blink_error() {
 
 int main() {
 	// OFF:
+#if defined(_WIN32) || defined(COMPILING_FOR_RASPI_PICO)
 	rpm = 6; // Replace this with whatever the starting value is
 	signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0; // Value in nanoseconds
 	signal_length_2 = signal_length * 2;
@@ -54,13 +55,14 @@ int main() {
 	full_rotation = signal_length * 35 + signal_length * 34 + signal_length_3;
 	teeth_gap_passed = 0;
 	temp_3 = 5;
+#endif
 #if _WIN32
 	average_latency = 0;
 	latency_count = 0;
 	valve_pipe_name = TEXT("\\\\.\\pipe\\Valves");
 	CPS_pipe_name = TEXT("\\\\.\\pipe\\CPS");
 	cbToWrite = 4;
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 	stdio_init_all();
 	gpio_init(0);
 	gpio_set_dir(0, GPIO_OUT);
@@ -93,7 +95,7 @@ int main() {
 		if (valve_pipe != INVALID_HANDLE_VALUE && CPS_pipe != INVALID_HANDLE_VALUE) {
 			break;
 		}
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 		chBuf = gpio_get(28);
 		if (chBuf) {
 			break;
@@ -104,12 +106,15 @@ int main() {
 #if _WIN32
 	ReadFile(CPS_pipe, chBuf, 512 * sizeof(bool), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
 	start_signal = chBuf[0];
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 	chBuf = gpio_get(28);
 	start_signal = chBuf;
 #endif
 	// VERIFY
-	while (teeth_gap_passed < 70) {
+#if defined(_WIN32) || defined(COMPILING_FOR_RASPI_PICO)
+	while (teeth_gap_passed < 70)
+#endif
+	{
 #if _WIN32
 		ReadFile(CPS_pipe, chBuf, 512 * sizeof(bool), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
 		if (chBuf[0] != start_signal) {
@@ -121,7 +126,7 @@ int main() {
 			teeth_gap_passed++;
 			start_signal = chBuf[0];
 		}
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 		chBuf = gpio_get(28);
 		if (chBuf != start_signal) {
 			elapsed = steady_clock::now() - teeth_gap_start;
@@ -134,6 +139,7 @@ int main() {
 		}
 #endif
 	}
+#if defined(_WIN32) || defined(COMPILING_FOR_RASPI_PICO)
 	// NO GAPS FOUND
 	if (gaps_locations.size() == 0) {
 		gaps_locations.insert(0);
@@ -142,10 +148,14 @@ int main() {
 	// NO GAPS FOUND
 	teeth_gap_passed = 0;
 	teeth_gap_start = steady_clock::now();
+#endif
 #ifdef _WIN32
 	average_latency -= signal_length;
 #endif
-	while (teeth_gap_passed < 70) {
+#if defined(_WIN32) || defined(COMPILING_FOR_RASPI_PICO)
+	while (teeth_gap_passed < 70)
+#endif
+	{
 #if _WIN32
 		ReadFile(CPS_pipe, chBuf, 512 * sizeof(bool), &cbRead, NULL); // READ FROM PIPE. chBuf[0] EQUALS SIGNAL RECEIVED
 		if (chBuf[0] != start_signal) {
@@ -163,7 +173,7 @@ int main() {
 				temp = signal_length;
 			}
 		}
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 		chBuf = gpio_get(28);
 		if (chBuf != start_signal) {
 			elapsed = steady_clock::now() - teeth_gap_start;
@@ -188,9 +198,11 @@ int main() {
 	// WILL BE REFORMATTED FOR PROPER FILE
 	gaps_locations.erase(gaps_locations.begin());
 	gaps_locations.insert(69);
+#if defined(_WIN32) || defined(COMPILING_FOR_RASPI_PICO)
 	elapsed = steady_clock::now() - last_big_gap;
 	teeth_gap_passed = ((elapsed.count() - signal_length_3) / signal_length);
 	start_angle = teeth_gap_passed * 5;
+#endif
 	// WILL BE REFORMATTED FOR PROPER FILE
 	while (true) {
 #if _WIN32
@@ -229,7 +241,7 @@ int main() {
 			}
 			start_signal = chBuf[0];
 		}
-#else
+#elif defined(COMPILING_FOR_RASPI_PICO)
 		elapsed = steady_clock::now() - teeth_gap_start;
 		angle = (int)(start_angle + (((((float)elapsed.count() / (float)temp))) * temp_3)) % 720;
 		chBuf = gpio_get(28);
