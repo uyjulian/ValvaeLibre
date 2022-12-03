@@ -28,7 +28,7 @@ bool SIGNAL = true;
 std::chrono::time_point<std::chrono::steady_clock> ENG_TICK_CLOCK = std::chrono::steady_clock::now();
 #ifdef COMPILING_FOR_RASPI_PICO
 uint LED_PIN = PICO_DEFAULT_LED_PIN;
-uint CPS_PIN = 28;
+uint CPS_PIN = 27;
 #endif // COMPILING_FOR_RASPI_PICO
 
 
