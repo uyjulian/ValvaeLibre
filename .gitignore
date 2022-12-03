@@ -10,3 +10,4 @@ build
 .gradle
 android-project/app/.cxx/
 .vs
+.vscode
