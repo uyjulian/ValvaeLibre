@@ -57,11 +57,11 @@ endif()
 
 
 set(program2_SRC
-	src/program2.cpp
+	src/picoEsim.cpp
     table.cpp
 )
 
-set(program2_NAME program2)
+set(program2_NAME picoEsim)
 add_executable(${program2_NAME})
 
 target_sources(${program2_NAME} PRIVATE ${program2_SRC})
@@ -69,7 +69,7 @@ target_sources(${program2_NAME} PRIVATE ${program2_SRC})
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
-    target_link_libraries(${program2_NAME} pico_stdlib)
+    target_link_libraries(${program2_NAME} pico_stdlib pico_multicore)
 
     # enable usb output, disable uart output
     pico_enable_stdio_usb(${program2_NAME} 1)
