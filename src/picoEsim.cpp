@@ -37,7 +37,7 @@ uint64_t waitTime(int);
 void CPS(toneWheel, uint64_t);
 #else
 std::chrono::microseconds waitTime(int);
-void CPS(toneWheel, std::chrono::nanoseconds);
+void CPS(toneWheel, std::chrono::microseconds);
 #endif
 
 void sendSignal();
