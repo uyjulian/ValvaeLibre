@@ -30,21 +30,21 @@ def read_json_keys(extract_keys: dict):
 
 # -------------- COMPUTING THE VALUES --------------------
 def computing_values(my_table: list, extract_keys: dict):
-    for angle in range(0, extract_keys["intake_valve_duration"]):
-        current_offset = 0
-        for cylinder in range(0, extract_keys["number_of_cylinders"]):
-            index_angle = (extract_keys["intake_valve_opens"] + angle + current_offset) % 720
-            bit = INTAKE_BITS[extract_keys["firing_order"][cylinder] - 1]
-            my_table[index_angle] = set_bit(my_table[index_angle], bit)
-            current_offset += offsets[extract_keys["number_of_cylinders"]]
+    current_offset = 0
+    for cylinder in extract_keys["firing_order"]:
+        bit  = INTAKE_BITS[cylinder - 1]
+        for angle in range(0, extract_keys["intake_valve_duration"]):
+            angle_index = (extract_keys["intake_valve_opens"] + angle + current_offset) % 720
+            my_table[angle_index] = set_bit(my_table[angle_index], bit)
+        current_offset += offsets[extract_keys["number_of_cylinders"]]
 
-    for angle in range(0, extract_keys["exhaust_valve_duration"]):
-        current_offset = 0
-        for cylinder in range(0, extract_keys["number_of_cylinders"]):
-            index_angle = (extract_keys["exhaust_valve_opens"] + angle + current_offset) % 720
-            bit = EXHAUST_BITS[extract_keys["firing_order"][cylinder] - 1]
-            my_table[index_angle] = set_bit(my_table[index_angle], bit)
-            current_offset += offsets[extract_keys["number_of_cylinders"]]
+    current_offset = 0
+    for cylinder in extract_keys["firing_order"]:
+        bit  = EXHAUST_BITS[cylinder - 1]
+        for angle in range(0, extract_keys["exhaust_valve_duration"]):
+            angle_index = (extract_keys["exhaust_valve_opens"] + angle + current_offset) % 720
+            my_table[angle_index] = set_bit(my_table[angle_index], bit)
+        current_offset += offsets[extract_keys["number_of_cylinders"]]
 
 # -------------- CREATING STRINGS FOR TABLE -----------
 def create_table(my_table:list) -> str:
