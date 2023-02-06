@@ -1,0 +1,198 @@
+body {
+  margin: 0px;
+  font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: npone;
+}
+
+li a:hover {
+  background-color: rgb(82, 2, 2);
+}
+
+h1 {
+  text-align: center;
+  text-shadow: 2px 2px 2px black;
+
+}
+
+h2 {
+  text-align: left;
+}
+
+.title_area h1 {
+  color: rgb(190, 187, 187);
+}
+
+.title_area h1 span {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: rgb(128, 0, 0);
+}
+
+.title_area h2 {
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: 0;
+}
+
+.title_area h3 {
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: maroon;
+}
+
+.navbar li a {
+  border-style: double;
+  border-color: rgb(41, 14, 14);
+  color: white;
+  text-decoration: none;
+}
+
+.navbar li h1 {
+  margin: 0;
+  padding: calc(5px);
+  color: white;
+  text-shadow: 2px 2px 2px black;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .section-break {
+  margin-top: 60px;
+}
+
+.title_area h2 {
+  text-align: center;
+}
+
+.title_area p {
+  text-align: center;
+}
+
+.about {
+  padding-bottom: 10px;
+  margin: 20px;
+}
+
+.about h2 {
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 40px;
+  padding-bottom: 0px;
+  color: maroon;
+}
+
+.about p {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-top: 0px;
+  color: black;
+}
+
+.box1 {
+  margin: 100px;
+  background-color: rgb(131, 130, 130);
+  border-radius: 10px;
+}
+
+.box2 {
+  margin: 20px;
+  background-color: white;
+}
+
+.footer {
+  list-style-type: none;
+  margin: 0;
+  text-align: center;
+  padding-bottom: 20px;
+  overflow: hidden;
+  background-color: rgb(63, 63, 63);
+  font-size: x-small;
+}
+
+.footer li {
+  text-align: center;
+}
+
+.footer li a {
+  text-decoration: none;
+  text-align: center;
+}
+
+.footer li a:hover {
+  background-color: rgb(63, 63, 63);
+  color: gray;
+}
+
+.cylinder-inputs {
+  background-color: gray;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.firing_order-inputs {
+  background-color: rgb(128, 25, 25);
+  color: white;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+}
+
+.lift-inputs {
+  background-color: gray;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+}
+
+.duration-inputs {
+  background-color: rgb(128, 25, 25);
+  color: white;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+}
+
+.open_close-inputs {
+  background-color: gray;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+}
+
+.rocker_arm-inputs {
+  background-color: rgb(128, 25, 25);
+  color: white;
+  text-align: left;
+  margin: 0px;
+  padding: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
