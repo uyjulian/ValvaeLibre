@@ -117,11 +117,14 @@ h2 {
   margin: 100px;
   background-color: rgb(131, 130, 130);
   border-radius: 10px;
+  box-shadow: 0 0 15px black;
 }
 
 .box2 {
   margin: 20px;
   background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgb(10, 0, 0);
 }
 
 .footer {
@@ -131,7 +134,7 @@ h2 {
   padding-bottom: 20px;
   overflow: hidden;
   background-color: rgb(63, 63, 63);
-  font-size: x-small;
+  font-size: small;
 }
 
 .footer li {
@@ -195,4 +198,15 @@ h2 {
   padding: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.radio-style {
+  background-color: rgb(131, 16, 16);
+  padding: 2px 5px 2px 2px;
+  border-radius: 8px;
+  color: white;
+}
+
+.radio-style:hover {
+  background-color: rgb(70, 1, 1);
 }
