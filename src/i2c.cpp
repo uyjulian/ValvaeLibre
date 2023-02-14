@@ -9,6 +9,7 @@
 #include "hardware/adc.h"
 #include "lcd_constants.h"
 
+using namespace LCDConstants;
 #endif
 
 //-----------SPECIFING PINS-----------------
@@ -21,8 +22,6 @@
 
 //-----------OTHER MACROS-------------------
 #define DELAY_US 600
-
-using namespace LCDConstants;
 
 // Single byte transfer function
 #ifdef COMPILING_FOR_RASPI_PICO
