@@ -245,19 +245,13 @@ int main() {
 		elapsed = steady_clock::now() - teeth_gap_start;
 		angle = (int)(start_angle + (((((float)elapsed.count() / (float)temp))) * temp_3)) % 720;
 		chBuf = gpio_get(28);
+		gpio_put_all(test_table.table[angle]);
 		if (chBuf != start_signal) {
 			elapsed = steady_clock::now() - teeth_gap_start;
 			teeth_gap_start = steady_clock::now();
 			start_angle = (start_angle + temp_3) % 720;
 			angle = start_angle;
-			gpio_put(0, check_bit(31,start_angle));
-			gpio_put(1, check_bit(30, start_angle));
-			gpio_put(2, check_bit(29, start_angle));
-			gpio_put(3, check_bit(28, start_angle));
-			gpio_put(16, check_bit(16, start_angle));
-			gpio_put(17, check_bit(15, start_angle));
-			gpio_put(18, check_bit(14, start_angle));
-			gpio_put(19, check_bit(13, start_angle));
+			gpio_put_all(test_table.table[angle]);
 			temp_2 = elapsed.count() - temp;
 			/*
 			if (temp = signal_length_3) {
