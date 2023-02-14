@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cam Card Info Converter</title>
+    <link rel="stylesheet" href="./css/camcard_info_v2.css">
+    <script src="js/camcard_info_v2.js"></script>
+</head>
+<body>
+    <div class="testbox">
+        <form action="" id="f1">
+            <div class="banner"></div>
+            <div class="banner2">
+                <h1>Cam Card Information Converter</h1>
+                <h2> Enter all cam info in the fields below </h2>
+            </div>
+            <div class="colums">
+                <div class="item">
+                    <label for="in_lift_cam">Intake Lift @ Cam<span>*</span></label>
+                    <input id="in_lift_cam" type="number" step=".001" name="in_lift_cam" value=0.321 required />
+                </div>
+                <div class="item">
+                    <label for="ex_lift_cam">Exhaust Lift @ Cam<span>*</span></label>
+                    <input id="ex_lift_cam" type="number" step=".001" name="ex_lift_cam" value=0.321 required />
+                </div>
+                <div class="item">
+                    <label for="in_lift_valve">Intake Lift @ Valve<span>*</span></label>
+                    <input id="in_lift_valve" type="number" step=".001" name="in_lift_valve" value=0.545 required />
+                </div>
+                <div class="item">
+                    <label for="ex_lift_valve">Exhaust Lift @ Valve<span>*</span></label>
+                    <input id="ex_lift_valve" type="number" step=".001" name="ex_lift_valve" value=0.545 required />
+                </div>
+                <div class="item">
+                    <label for="in_duation">Duration of Intake Open<span>*</span></label>
+                    <input id="in_duration" type="number" step=".001" name="in_duration" value=278 required />
+                </div>
+                <div class="item">
+                    <label for="ex_duration">Duration of Exhaust Open<span>*</span></label>
+                    <input id="ex_duration" type="number" step=".001" name="ex_duation" value=282 required />
+                </div>
+                <div class="item">
+                    <label for="in_open">Intake Opens<span>*</span></label>
+                    <input id="in_open" type="number" step=".001" name="in_open" value=30 required />
+                    <select id="specifier1" name="specifier1" required>
+                        <option value="btdc" selected>BTDC</option>
+                        <option value="bbdc">BBDC</option>
+                        <option value="atdc">ATDC</option>
+                        <option value="abdc">ABDC</option>
+                    </select><span>*</span>
+                </div>
+                <div class="item">
+                    <label for="in_close">Intake Closes<span>*</span></label>
+                    <input id="in_close" type="number" step=".001" name="in_close" value=68 required />
+                    <select id="specifier2" name="specifier2" required>
+                        <option value="btdc">BTDC</option>
+                        <option value="bbdc">BBDC</option>
+                        <option value="atdc">ATDC</option>
+                        <option value="abdc" selected>ABDC</option>
+                    </select><span>*</span>
+                </div>
+                <div class="item">
+                    <label for="ex_open">Exhaust Opens<span>*</span></label>
+                    <input id="ex_open" type="number" step=".001" name="ex_open" value=76 required />
+                    <select id="specifier3" name="specifier3" required>
+                        <option value="btdc">BTDC</option>
+                        <option value="bbdc" selected>BBDC</option>
+                        <option value="atdc">ATDC</option>
+                        <option value="abdc">ABDC</option>
+                    </select><span>*</span>
+                </div>
+                <div class="item">
+                    <label for="ex_close">Exhaust Closes<span>*</span></label>
+                    <input id="ex_close" type="number" step=".001" name="ex_close" value=26 required />
+                    <select id="specifier4" name="specifier4" required>
+                        <option value="btdc">BTDC</option>
+                        <option value="bbdc">BBDC</option>
+                        <option value="atdc" selected>ATDC</option>
+                        <option value="abdc">ABDC</option>
+                    </select><span>*</span>
+                </div>
+                <div class="item">
+                    <label for="ra_ratio">Rocker Arm Ratio<span>*</span></label>
+                    <input id="ra_ratio" type="number" step=".001" name="ra_ratio" value=1.7 required />
+                </div>
+            </div>
+            <div class="question">
+                <label>Number of Cylinders</label>
+                <div class="question-answer">
+                    <div>
+                        <input type="radio" value="none" id="radio_1" name="type" 
+                               onchange="cyl_change_dropdown()" checked />
+                        <label for="radio_1" class="radio"><span>4 Cylinders</span></label>
+                    </div>
+                    <div>
+                        <input type="radio" value="none" id="radio_2" name="type"
+                               onchange="cyl_change_dropdown()" />
+                        <label for="radio_2" class="radio"><span>6 Cylinders</span></label>
+                    </div>
+                    <div>
+                        <input type="radio" value="none" id="radio_3" name="type"
+                               onchange="cyl_change_dropdown()" />
+                        <label for="radio_3" class="radio"><span>8 Cylinders</span></label>
+                    </div>
+                </div>
+                <div class="item">
+                    <label for="fire_order">Firing Order</label>
+                    <select id="fire_order" name="fire_order" required>
+                        <option value=1,3,4,2 selected>1342</option>
+                    </select><span>*</span>
+                </div>
+            </div>
+
+            <div class="btn-block">
+                <button id="submit" type="submit" onclick="storeFunc()">Submit</button>
+            </div>
+            <a href="./json/table.json" id="link" download="link"></a>
+        </form>
+    </div>
+</body>
+</html>

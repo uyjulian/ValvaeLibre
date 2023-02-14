@@ -22,22 +22,20 @@
       <!-- Number of Cylinders -->
       <div class="cylinder-inputs">
         <h2>Number of Cylinders</h2>
-        <span class="radio-style">
-          <input type="radio" value="none" id="4_cyl" name="num_cyl" value=4>
-          <label for="4_cyl">4 Cylinders</label>
-        </span><br><br>
-        <span class="radio-style">
-          <input type="radio" value="none" id="6_cyl" name="num_cyl" value=6>
-          <label for="6_cyl">6 Cylinders</label>
-        </span><br><br>
-        <span class="radio-style">
-          <input type="radio" value="none" id="8_cyl" name="num_cyl" value=8>
-          <label for="8_cyl">8 Cylinders</label>
+        <span class="dropdown-style1">
+          <label for="num-cyl">Number of Cylinders: </label>
+          <select id="num-cyl" name="num-cyl" onchange="numCylSelected()">
+            <option value=0 selected>Select an Option</option>
+            <option value=1>1 Cylinder</option>
+            <option value=4>4 Cylinders</option>
+            <option value=6>6 Cylinders</option>
+            <option value=8>8 Cylinders</option>
+          </select>
         </span><br><br>
       </div>
       
       <!-- Firing Order -->
-      <div class="firing_order-inputs">
+      <div id="firing_order-inputs" class="firing_order-inputs">
         <h2>Firing Order</h2>
       </div>
       
@@ -65,10 +63,10 @@
 
     <!-- Bottom of the page -->
     <div class="footer" id="footer">
-      <li><a href="#title_area">Home</a></li>
+      <li><a href="./beautiful_UI.html#title_area">Home</a></li>
       <li><a href="./tonewheel.html">Tone Wheel Input</a></li>
       <li><a href="./camshaft.html">Camshaft Input</a></li>
-      <li><a href="#section-break1">About</a></li>
+      <li><a href="./beautiful_UI.html#section-break1">About</a></li>
     </div>
   </body>
 </html>
