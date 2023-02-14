@@ -30,6 +30,13 @@ h2 {
   text-align: left;
 }
 
+.title_area {
+  background-color: rgb(200, 200, 200);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .title_area h1 {
   color: rgb(190, 187, 187);
 }
@@ -43,12 +50,17 @@ h2 {
 .title_area h2 {
   font-family: 'Courier New', Courier, monospace;
   margin-top: 0;
+  text-align: center;
 }
 
 .title_area h3 {
   font-family: 'Courier New', Courier, monospace;
   margin-top: 0;
   margin-bottom: 0;
+  text-align: center;
+}
+
+.title_area p {
   text-align: center;
 }
 
@@ -69,7 +81,7 @@ h2 {
 
 .navbar li h1 {
   margin: 0;
-  padding: calc(5px);
+  padding: 5px;
   color: white;
   text-shadow: 2px 2px 2px black;
 }
@@ -81,15 +93,7 @@ h2 {
 }
 
 .sticky + .section-break {
-  margin-top: 60px;
-}
-
-.title_area h2 {
-  text-align: center;
-}
-
-.title_area p {
-  text-align: center;
+  margin-top: 50px;
 }
 
 .about {
@@ -115,7 +119,7 @@ h2 {
 
 .box1 {
   margin: 100px;
-  background-color: rgb(131, 130, 130);
+  background-color: rgb(200, 200, 200);
   border-radius: 10px;
   box-shadow: 0 0 15px black;
 }
@@ -152,7 +156,7 @@ h2 {
 }
 
 .cylinder-inputs {
-  background-color: gray;
+  background-color: rgb(200,200,200);
   text-align: left;
   margin: 0px;
   padding: 20px;
@@ -169,7 +173,7 @@ h2 {
 }
 
 .lift-inputs {
-  background-color: gray;
+  background-color: rgb(200,200,200);
   text-align: left;
   margin: 0px;
   padding: 20px;
@@ -184,7 +188,7 @@ h2 {
 }
 
 .open_close-inputs {
-  background-color: gray;
+  background-color: rgb(200,200,200);
   text-align: left;
   margin: 0px;
   padding: 20px;
@@ -200,13 +204,24 @@ h2 {
   border-bottom-right-radius: 20px;
 }
 
-.radio-style {
+.dropdown-style1 {
   background-color: rgb(131, 16, 16);
-  padding: 2px 5px 2px 2px;
+  padding: 5px 5px 5px 5px;
   border-radius: 8px;
   color: white;
 }
 
-.radio-style:hover {
+.dropdown-style1:hover {
   background-color: rgb(70, 1, 1);
+}
+
+.dropdown-style2 {
+  background-color: rgb(200, 200, 200);
+  padding: 5px 5px 5px 5px;
+  border-radius: 8px;
+  color: black;
+}
+
+.dropdown-style2:hover {
+  background-color: rgb(120, 120, 120);
 }
