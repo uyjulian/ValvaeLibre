@@ -1,27 +1,49 @@
-#include <stdio.h>
-#include <string>
+#ifndef LCD_INTERFACE_H
+#define LCD_INTERFACE_H
 
-#ifdef COMPILING_FOR_RASPI_PICO
+// Modes for lcd_send_byte
+#define LCD_CHARACTER  1    // sending a char
+#define LCD_COMMAND    0    // sending a command for LCD
 
-#include "pico/stdlib.h"
-#include "pico/binary_info.h"
-#include "hardware/i2c.h"
-#include "hardware/adc.h"
-#include "lcd_constants.h"
+// defining the size of the screen
+#define MAX_LINES 2
+#define MAX_CHARS 16
 
-using namespace LCDConstants;
-#endif
-
-//-----------SPECIFING PINS-----------------
-#define SDA_PIN 0
-#define SCL_PIN 1
-#define DEFAULT_LED 25
-
-#define GAS_SENSOR_PIN 26
-#define HALLO_SENSOR_PIN 27
-
-//-----------OTHER MACROS-------------------
 #define DELAY_US 600
+
+/*-------------------------------------------------------------------*/
+
+// commands for LCD
+const int LCD_CLEARDISPLAY = 0x01;
+const int LCD_RETURNHOME = 0x02;
+const int LCD_ENTRYMODESET = 0x04;
+const int LCD_DISPLAYCONTROL = 0x08;
+const int LCD_CURSORSHIFT = 0x10;
+const int LCD_FUNCTIONSET = 0x20;
+const int LCD_SETCGRAMADDR = 0x40;
+const int LCD_SETDDRAMADDR = 0x80;
+
+// flags for display entry mode
+const int LCD_ENTRYSHIFTINCREMENT = 0x01;
+const int LCD_ENTRYLEFT = 0x02;
+
+// flags for display and cursor control
+const int LCD_BLINKON = 0x01;
+const int LCD_CURSORON = 0x02;
+const int LCD_DISPLAYON = 0x04;
+
+// flags for function set
+const int LCD_5x10DOTS = 0x04;
+const int LCD_2LINE = 0x08;
+const int LCD_8BITMODE = 0x10;
+
+// flag for backlight control
+const int LCD_BACKLIGHT = 0x08; // the code you send(as the lsb nibble) to keep the screen on 
+const int LCD_ENABLE_BIT = 0x04;
+
+// By default these LCD display drivers are on bus address 0x27
+const static int LCD_ADDR = 0x27;
+
 
 // Single byte transfer function
 #ifdef COMPILING_FOR_RASPI_PICO
@@ -100,55 +122,4 @@ void lcd_set_cursor(int line, int position) {
 }
 #endif
 
-//------------STRUCT FOR DISPLAY OUTPUTS-----------------
-struct DisplayValue
-{
-    std::string header = "";
-    int header_row = 0;
-    int header_column = 0;
-    std::string val = 0;
-    int val_row = 0;
-    int val_column = 0;
-}hall_sensor, gas_sensor;
-
-
-#ifdef COMPILING_FOR_RASPI_PICO
-int main() {
-    stdio_init_all();
-
-    i2c_init(i2c_default, 100 * 1000);
-    gpio_set_function(SDA_PIN, GPIO_FUNC_I2C);
-    gpio_set_function(SCL_PIN, GPIO_FUNC_I2C);
-
-    gpio_pull_up(SDA_PIN);
-    gpio_pull_up(SCL_PIN);
-
-    bi_decl(bi_2pins_with_func(SDA_PIN, SCL_PIN, GPIO_FUNC_I2C));
-    lcd_init();
-
-    hall_sensor.header = "Hall: ";
-    hall_sensor.val_column = 10;
-    hall_sensor.val = std::to_string(4095);
-
-    gas_sensor.header = "Gas: ";
-    gas_sensor.header_row = 1;
-    gas_sensor.val_row = 1;
-    gas_sensor.val_column = 10;
-    gas_sensor.val = std::to_string(4095);
-
-    lcd_set_cursor(hall_sensor.header_row, hall_sensor.header_column);
-    lcd_send_string(hall_sensor.header, hall_sensor.header.length());
-    lcd_set_cursor(hall_sensor.val_row, hall_sensor.val_column);
-    lcd_send_string(hall_sensor.val, hall_sensor.val.length());
-
-    lcd_set_cursor(gas_sensor.header_row, gas_sensor.header_column);
-    lcd_send_string(gas_sensor.header, gas_sensor.header.length());
-    lcd_set_cursor(gas_sensor.val_row, gas_sensor.val_column);
-    lcd_send_string(gas_sensor.val, gas_sensor.val.length());
-
-}
-#else
-int main() {
-	return 0;
-}
-#endif
+#endif 
