@@ -17,7 +17,7 @@
   },
   "jobs" : {
     "build-ubuntu" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "steps" : [
         {
@@ -36,17 +36,29 @@
           "run" : "sudo apt-get install build-essential cmake ninja-build"
         },
         {
+          "name" : "Set up Homebrew environment for Github Actions",
+          "run" : "echo \"/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin\" >> $GITHUB_PATH"
+        },
+        {
+          "name" : "Set up default build tools",
+          "run" : "brew install make cmake ninja googletest"
+        },
+        {
           "name" : "Configure project",
-          "run" : "cmake -S . -B build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+          "run" : "cmake -S . -B build -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_AUTOMATED_TESTS=ON"
         },
         {
           "name" : "Build project",
           "run" : "cmake --build build"
+        },
+        {
+          "name" : "Test project",
+          "run" : "cmake --build build --target test"
         }
       ]
     },
     "build-ubuntu-win32" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "strategy" : {
         "fail-fast" : false,
@@ -97,7 +109,7 @@
       ]
     },
     "build-ubuntu-pico" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "steps" : [
         {
