@@ -27,6 +27,12 @@ project(SeniorCapstoneProject2022)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+if(ENABLE_AUTOMATED_TESTS)
+enable_testing()
+find_package(GTest CONFIG REQUIRED)
+include(GoogleTest)
+endif()
+
 if(TARGET_RASPI_PICO)
 pico_sdk_init()
 endif()
@@ -154,5 +160,22 @@ target_link_libraries(${run_both_programs_NAME} shlwapi.lib)
 target_sources(${run_both_programs_NAME} PRIVATE ${run_both_programs_SRC})
 
 add_dependencies(${run_both_programs_NAME} ${engineSim_NAME} ${VCP_NAME})
+
+endif()
+
+if(ENABLE_AUTOMATED_TESTS)
+
+set(sampleautotest_SRC
+    src/sampleautotest.cpp
+)
+
+set(sampleautotest_NAME sampleautotest)
+add_executable(${sampleautotest_NAME})
+
+target_sources(${sampleautotest_NAME} PRIVATE ${sampleautotest_SRC})
+
+target_link_libraries(${sampleautotest_NAME} GTest::gtest GTest::gtest_main)
+
+gtest_discover_tests(${sampleautotest_NAME})
 
 endif()
