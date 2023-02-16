@@ -31,26 +31,26 @@ if(TARGET_RASPI_PICO)
 pico_sdk_init()
 endif()
 
-set(i2c_SRC
-	src/i2c.cpp
+set(engine_interface_SRC
+	src/engine_interface.cpp
 )
 
-set(i2c_INTERFACE i2c)
-add_executable(${i2c_INTERFACE})
+set(ENGINE_INTERFACE engine_interface)
+add_executable(${ENGINE_INTERFACE})
 
-target_sources(${i2c_INTERFACE} PRIVATE ${i2c_SRC})
+target_sources(${ENGINE_INTERFACE} PRIVATE ${engine_interface_SRC})
 
 if(TARGET_RASPI_PICO)
     # pull in common dependencies
-    target_link_libraries(${i2c_INTERFACE} pico_stdlib hardware_i2c hardware_adc)
+    target_link_libraries(${ENGINE_INTERFACE} pico_stdlib hardware_i2c hardware_adc)
 
     # enable uart output
-    pico_enable_stdio_uart(${i2c_INTERFACE} 1)
+    pico_enable_stdio_uart(${ENGINE_INTERFACE} 1)
 
     # create map/bin/hex/uf2 file etc.
-    pico_add_extra_outputs(${i2c_INTERFACE})
+    pico_add_extra_outputs(${ENGINE_INTERFACE})
 
-    target_compile_definitions(${i2c_INTERFACE} PRIVATE COMPILING_FOR_RASPI_PICO=1)
+    target_compile_definitions(${ENGINE_INTERFACE} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
 
