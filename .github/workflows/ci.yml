@@ -17,7 +17,7 @@
   },
   "jobs" : {
     "build-ubuntu" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "steps" : [
         {
@@ -58,7 +58,7 @@
       ]
     },
     "build-ubuntu-win32" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "strategy" : {
         "fail-fast" : false,
@@ -109,7 +109,7 @@
       ]
     },
     "build-ubuntu-pico" : {
-      "runs-on" : "ubuntu-20.04",
+      "runs-on" : "ubuntu-22.04",
       "timeout-minutes" : 20,
       "steps" : [
         {
