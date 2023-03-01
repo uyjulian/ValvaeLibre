@@ -13,13 +13,14 @@ offsets = {
     8: 90
 }
 
-# -------------- SETTING BITS FUNCTION -----------------------
-def set_bit(number : int, bit : int) -> int:
-    return number | (1<<bit)
-
 # -------------- TABLE ---------------------------------------
 TABLE_SIZE = 720
 my_table = [0b00000000000000000000000000000000] * TABLE_SIZE
+extended_table = [my_table for i in range(55)]
+
+# -------------- SETTING BITS FUNCTION -----------------------
+def set_bit(number : int, bit : int) -> int:
+    return number | (1<<bit)
 
 # -------------- READING JSON VALUES--------------------------
 def read_json_keys(extract_keys: dict):
@@ -31,25 +32,25 @@ def read_json_keys(extract_keys: dict):
             extract_keys[table_key] = table_dict[table_key]
 
 # -------------- COMPUTING THE VALUES -----------------------
-def computing_values(my_table: list, extract_keys: dict):
+def computing_table(my_table: list, **kwargs):
     current_offset = 0
-    for cylinder in extract_keys["firing_order"]:
+    for cylinder in kwargs["firing_order"]:
         bit  = INTAKE_BITS[cylinder - 1]
-        for angle in range(0, extract_keys["intake_valve_duration"]):
-            angle_index = (extract_keys["intake_valve_opens"] + angle + current_offset) % 720
+        for angle in range(0, kwargs["intake_valve_duration"]):
+            angle_index = (kwargs["intake_valve_opens"] + angle + current_offset) % 720
             my_table[angle_index] = set_bit(my_table[angle_index], bit)
-        current_offset += offsets[extract_keys["number_of_cylinders"]]
+        current_offset += offsets[kwargs["number_of_cylinders"]]
 
     current_offset = 0
-    for cylinder in extract_keys["firing_order"]:
+    for cylinder in kwargs["firing_order"]:
         bit  = EXHAUST_BITS[cylinder - 1]
-        for angle in range(0, extract_keys["exhaust_valve_duration"]):
-            angle_index = (extract_keys["exhaust_valve_opens"] + angle + current_offset) % 720
+        for angle in range(0, kwargs["exhaust_valve_duration"]):
+            angle_index = (kwargs["exhaust_valve_opens"] + angle + current_offset) % 720
             my_table[angle_index] = set_bit(my_table[angle_index], bit)
-        current_offset += offsets[extract_keys["number_of_cylinders"]]
+        current_offset += offsets[kwargs["number_of_cylinders"]]
 
 # -------------- CREATING STRINGS FOR TABLE ------------------
-def create_table(my_table:list) -> str:
+def create_table_str(my_table:list) -> str:
     array_init = "static const unsigned int table[] = {\n"
     for i, val in enumerate(my_table):
         array_init += str(val)
@@ -98,7 +99,9 @@ if __name__ == "__main__":
         "};\n"
     ]
 
-    computing_values(my_table, extract_keys)
-    array_init = create_table(my_table)
+    computing_table(my_table, **extract_keys)
+    # for i, table in enumerate(extended_table):
+    #     computing_table(table, **extract_keys)
+    array_init = create_table_str(my_table)
     writting_strings(preprocess_list, array_init, table_init)
     print_table(my_table)
