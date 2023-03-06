@@ -60,6 +60,7 @@ if(TARGET_RASPI_PICO)
 endif()
 
 
+if(TARGET_RASPI_PICO)
 set(program2_SRC
 	src/picoEsim.cpp
     table.cpp
@@ -71,7 +72,6 @@ add_executable(${program2_NAME})
 target_sources(${program2_NAME} PRIVATE ${program2_SRC})
 
 
-if(TARGET_RASPI_PICO)
     # pull in common dependencies
     target_link_libraries(${program2_NAME} pico_stdlib pico_multicore)
 
@@ -83,7 +83,7 @@ if(TARGET_RASPI_PICO)
     pico_add_extra_outputs(${program2_NAME})
 
     target_compile_definitions(${program2_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
-endif()
+ endif()
 
 set(input_from_gpio_sample_SRC
     src/input_from_gpio_sample.cpp
