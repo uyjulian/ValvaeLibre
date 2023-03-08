@@ -13,11 +13,12 @@
     <!-- Navbar -->
     <ul class="navbar" id="navbar">
       <li><a href="./beautiful_UI.html">Home</a></li>
-      <li><a href="./tonewheel.html">Tone Wheel Input</a></li>
+      <!--<li><a href="./tonewheel.html">Tone Wheel Input</a></li>-->
       <li><a href="./beautiful_UI.html#section-break1">About</a></li>
-      <li><h1>Valvae Libre</h1></li>
+      <li><h1><a href="./beautiful_UI.html">Valvae Libre</a> | Cam Shaft Page</h1></li>
     </ul>
 
+    <form id="f1">
     <div class="box2">
       <!-- Number of Cylinders -->
       <div class="cylinder-inputs">
@@ -25,9 +26,8 @@
         <span class="dropdown-style1">
           <label for="num-cyl">Number of Cylinders: </label>
           <select id="num-cyl" name="num-cyl" onchange="numCylSelected()">
-            <option value=0 selected>Select an Option</option>
             <option value=1>1 Cylinder</option>
-            <option value=4>4 Cylinders</option>
+            <option value=4 selected>4 Cylinders</option>
             <option value=6>6 Cylinders</option>
             <option value=8>8 Cylinders</option>
           </select>
@@ -38,35 +38,85 @@
       <div id="firing_order-inputs" class="firing_order-inputs">
         <h2>Firing Order</h2>
       </div>
+      <script src="../js/camshaft.js" onload="listFiringOrders(4)"></script>
       
       <!-- Lift -->
       <div class="lift-inputs">
         <h2>Lift Values</h2>
+        <label for="in_lift_valve">Intake valve lift @ Valve (inches): </label>
+        <input type="number" id="in_lift_valve" min="0" max="5" step="0.001" value=0.626><br>
+        <label for="ex_lift_valve">Exhaust valve lift @ Valve (inches): </label>
+        <input type="number" id="ex_lift_valve" min="0" max="5" step="0.001" value=0.605>
       </div>
       
       <!-- Durations -->
       <div class="duration-inputs">
         <h2>Duration Values</h2>
+        <label for="in_duration">Intake Duration (degrees): </label>
+        <input type="number" id="in_duration" min="0" max="360" step="1" value=287><br>
+        <label for="ex_duration">Exhaust Duration (degrees): </label>
+        <input type="number" id="ex_duration" min="0" max="360" step="1" value=295>
       </div>
       
       <!-- Open & Close -->
       <div class="open_close-inputs">
         <h2>Open & Close Values</h2>
+
+        <label for="in_open">Intake Opening Angle (degrees): </label>
+        <input type="number" id="in_open" min="0" max="360" step="1" value=34><br>
+        <label for="specifier1">Angle Relativity</label>
+        <select id="specifier1" required>
+          <option value="btdc" selected>BTDC</option>
+          <option value="bbdc">BBDC</option>
+          <option value="atdc">ATDC</option>
+          <option value="abdc">ABDC</option>
+        </select><span>*</span><br><br>
+
+        <label for="ex_open">Exhaust Opening Angle (degrees): </label>
+        <input type="number" id="ex_open" min="0" max="360" step="1" value=84><br>
+        <label for="specifier3">Angle Relativity</label>
+        <select id="specifier3" required>
+          <option value="btdc">BTDC</option>
+          <option value="bbdc" selected>BBDC</option>
+          <option value="atdc">ATDC</option>
+          <option value="abdc">ABDC</option>
+        </select><span>*</span><br><br>
+        
+        <label for="in_close">Intake Closing Angle (degrees): </label>
+        <input type="number" id="in_close" min="0" max="360" step="1" value=73><br>
+        <label for="specifier2">Angle Relativity</label>
+        <select id="specifier2" required>
+          <option value="btdc">BTDC</option>
+          <option value="bbdc">BBDC</option>
+          <option value="atdc">ATDC</option>
+          <option value="abdc" selected>ABDC</option>
+        </select><span>*</span><br><br>
+        
+        <label for="ex_close">Exhaust Closing Angle (degrees): </label>
+        <input type="number" id="ex_close" min="0" max="360" step="1" value=31><br>
+        <label for="specifier4">Angle Relativity</label>
+        <select id="specifier4" required>
+          <option value="btdc">BTDC</option>
+          <option value="bbdc">BBDC</option>
+          <option value="atdc" selected>ATDC</option>
+          <option value="abdc">ABDC</option>
+        </select><span>*</span>
       </div>
-      
-      <!-- Rocker Arm Ratio -->
-      <div class="rocker_arm-inputs">
-        <h2>Rocker Arm Ratio</h2>
-      </div>
+
+      <button id="submit" type="submit" onclick="storeFunc()">Submit</button>
+      <a id="link"></a>
     </div>
+    </form>
     <div class="section-break"><br></div>
+
+
 
     <!-- Bottom of the page -->
     <div class="footer" id="footer">
-      <li><a href="./beautiful_UI.html#title_area">Home</a></li>
-      <li><a href="./tonewheel.html">Tone Wheel Input</a></li>
-      <li><a href="./camshaft.html">Camshaft Input</a></li>
-      <li><a href="./beautiful_UI.html#section-break1">About</a></li>
+      <a href="./beautiful_UI.html#title_area">Home</a>
+      <!--<a href="./tonewheel.html">Tone Wheel Input</a>-->
+      <a href="./camshaft.html">Camshaft Input</a>
+      <a href="./beautiful_UI.html#section-break1">About</a>
     </div>
   </body>
 </html>

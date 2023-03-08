@@ -4,6 +4,10 @@ body {
   background-color: white;
 }
 
+span {
+  color: red;
+}
+
 li {
   float: left;
 }
@@ -13,7 +17,14 @@ li a {
   color: white;
   text-align: center;
   padding: 14px 16px;
-  text-decoration: npone;
+  text-decoration: none;
+}
+
+li h1 a {
+  text-align: center;
+  text-shadow: 2px 2px 2px black;
+  display: contents;
+
 }
 
 li a:hover {
@@ -126,7 +137,7 @@ h2 {
 
 .box2 {
   margin: 20px;
-  background-color: white;
+  background-color: rgb(200,200,200);
   border-radius: 20px;
   box-shadow: 0 0 15px rgb(10, 0, 0);
 }
@@ -141,16 +152,19 @@ h2 {
   font-size: small;
 }
 
-.footer li {
+.footer {
   text-align: center;
+  padding: 20px;
 }
 
-.footer li a {
+.footer a {
+  margin: 30px;
   text-decoration: none;
   text-align: center;
+  color: white;
 }
 
-.footer li a:hover {
+.footer a:hover {
   background-color: rgb(63, 63, 63);
   color: gray;
 }
@@ -200,8 +214,18 @@ h2 {
   text-align: left;
   margin: 0px;
   padding: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  
+}
+
+.box2 button {
+  margin: 20px;
+  border-radius: 20px;
+  background-color: rgb(128, 25, 25);
+}
+
+.box2 button:hover {
+  background-color: rgb(70, 1, 1);
+  color: white;
 }
 
 .dropdown-style1 {
