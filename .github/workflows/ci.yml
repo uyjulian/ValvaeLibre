@@ -154,6 +154,13 @@
         {
           "name" : "Build project",
           "run" : "cmake --build build"
+        },
+        {
+          "uses" : "actions/upload-artifact@master",
+          "with" : {
+            "name" : "ValvaeLibre-pico",
+            "path" : "build/*.uf2"
+          }
         }
       ]
     }
