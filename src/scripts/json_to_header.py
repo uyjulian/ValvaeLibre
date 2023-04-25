@@ -14,9 +14,11 @@ offsets = {
 }
 
 # -------------- TABLE ---------------------------------------
-TABLE_SIZE = 720
-my_table = [0b00000000000000000000000000000000] * TABLE_SIZE
-extended_table = [my_table for i in range(55)]
+TABLE_ANGLES = 720
+TABLE_COL_SIZE = 55
+TABLE_3D_SIZE = 2
+my_table = [0b00000000000000000000000000000000 for row in range(TABLE_ANGLES)]
+extended_table = [[my_table for col in range(55)] for d3 in range(TABLE_3D_SIZE)]
 
 # -------------- SETTING BITS FUNCTION -----------------------
 def set_bit(number : int, bit : int) -> int:
@@ -63,6 +65,27 @@ def create_table_str(my_table:list) -> str:
     array_init += "\n};\n"
     return array_init
 
+def create_extended_table_str(extended_table:list[list[list]]) -> str:
+    array_init = "static const unsigned int table[] = {\n"
+    for d3 in extended_table:
+        array_init += "{"
+        for d2 in d3:
+            array_init += "{"
+            for i, val in enumerate(d2):
+                array_init += str(val)
+                if i % 10 == 0:
+                    array_init += ",\n"
+                else:
+                    array_init += ", "
+            array_init = array_init[:-2]
+            array_init += "},\n"
+        array_init = array_init[:-2]
+        array_init += "},\n"
+
+    array_init = array_init[:-2]
+    array_init += "\n};\n"
+    return array_init
+
 # -------------- WRITING THE table.cpp FILE -------------------
 def writting_strings(preprocess_list: list, array_init: str, table_init: str):
     with open(sys.argv[2], "w") as header_file:
@@ -94,14 +117,21 @@ if __name__ == "__main__":
     table_init = [
         "\nValveTable test_table = {\n",
         "\ttable,\n",
-        f"\t{TABLE_SIZE},\n",
+        f"\t{TABLE_ANGLES},\n",
         "\t"+ str(extract_keys["number_of_cylinders"]) + "\n",
         "};\n"
     ]
 
     computing_table(my_table, **extract_keys)
-    # for i, table in enumerate(extended_table):
-    #     computing_table(table, **extract_keys)
+    for rpm in extended_table:
+        for table in rpm:
+            computing_table(table, **extract_keys)
+    print("extended_table[0][0]", len(extended_table[0][0]))
+    print("extended_table[0]", len(extended_table[0]))
+    print("extended_table", len(extended_table))
     array_init = create_table_str(my_table)
+    extended_array_init = create_extended_table_str(extended_table)
+    # with open("new_table.txt", "w") as new_file:
+    #    new_file.write(extended_array_init)
     writting_strings(preprocess_list, array_init, table_init)
-    print_table(my_table)
+    # print_table(my_table)
