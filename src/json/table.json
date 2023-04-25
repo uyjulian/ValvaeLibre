@@ -7,6 +7,6 @@
   "intake_valve_duration": 278,
   "exhaust_valve_duration": 282,
 
-  "number_of_cylinders": 4,
-  "firing_order": [1, 3, 4, 2]
+  "number_of_cylinders": 1,
+  "firing_order": [1]
 }
