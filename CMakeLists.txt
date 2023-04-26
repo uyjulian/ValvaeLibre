@@ -34,6 +34,8 @@ include(GoogleTest)
 endif()
 
 if(TARGET_RASPI_PICO)
+add_subdirectory(external/arduino-pico build_arduino_compat)
+add_subdirectory(external/liquidcrystal-i2c build_liquidcrystal_i2c)
 pico_sdk_init()
 endif()
 
@@ -161,6 +163,29 @@ target_sources(${run_both_programs_NAME} PRIVATE ${run_both_programs_SRC})
 
 add_dependencies(${run_both_programs_NAME} ${engineSim_NAME} ${VCP_NAME})
 
+endif()
+
+if(TARGET_RASPI_PICO)
+    set(ENGINEESIM_SRC
+        src/EngineESIM.cpp
+    )
+
+    set(ENGINEESIM_NAME EngineESIM)
+    add_executable(${ENGINEESIM_NAME})
+
+    target_sources(${ENGINEESIM_NAME} PRIVATE ${ENGINEESIM_SRC})
+
+    # Add pico_stdlib library which aggregates commonly used features
+    target_link_libraries(${ENGINEESIM_NAME} pico_stdlib pac-liquidcrystal-i2c hardware_adc pico_time)
+
+    # enable usb output, disable uart output
+    pico_enable_stdio_usb(${ENGINEESIM_NAME} 1)
+    pico_enable_stdio_uart(${ENGINEESIM_NAME} 0)
+
+    # create map/bin/hex/uf2 file in addition to ELF.
+    pico_add_extra_outputs(${ENGINEESIM_NAME})
+
+    target_compile_definitions(${ENGINEESIM_NAME} PRIVATE COMPILING_FOR_RASPI_PICO=1)
 endif()
 
 if(ENABLE_AUTOMATED_TESTS)

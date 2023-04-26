@@ -1,0 +1,6 @@
+[submodule "external/arduino-pico/arduino-pico"]
+	path = external/arduino-pico/arduino-pico
+	url = https://github.com/earlephilhower/arduino-pico.git
+[submodule "external/liquidcrystal-i2c/LiquidCrystal_I2C"]
+	path = external/liquidcrystal-i2c/LiquidCrystal_I2C
+	url = https://github.com/johnrickman/LiquidCrystal_I2C.git
