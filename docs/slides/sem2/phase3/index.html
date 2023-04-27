@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>ValvaeLibre Semester 2 Testing Phase</title>
+
+		<link rel="stylesheet" href="https://uyjulian.github.io/reveal_js/dist/reset.css">
+		<link rel="stylesheet" href="https://uyjulian.github.io/reveal_js/dist/reveal.css">
+		<link rel="stylesheet" href="https://uyjulian.github.io/reveal_js/dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="https://uyjulian.github.io/reveal_js/plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>ValvaeLibre Phase 3: Testing</h3>
+					<p>
+						<small>Jason Shick, Julian Uy, Logan Pinter, Nickolas Gallegos, Nikita Trifan</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Testing the UI automatically</h2>
+					<ul>
+						<li>Camshaft input UI is written in Javascript and HTML</li>
+						<li>The puppeteer library is used to automate testing</li>
+						<li>Open a web page, find and enter input, then press the submit button</li>
+					</ul>
+				</section>
+
+				<section><h1>UI Test Demo</h1></section>
+
+				<section>
+					<h2>Testing the VCP and ESim automatically</h2>
+					<ul>
+						<li>The Valve Control Program and Engine Simulator programs are written in C++</li>
+						<li>The Google Test library can be used to automate testing</li>
+						<li>This is implemented as an additional target in CMake</li>
+					</ul>
+				</section>
+
+				<section><h1>C++ Testing Demo</h1></section>
+
+				<section>Progress update</section>
+
+				<section>Actuators are now working!!</section>
+
+				<section>
+					<h2>Some problems we ran into</h2>
+					<ul>
+						<li>Op-amps were misbehaving</li>
+						<li>(Turns out we didn't need them anyways)</li>
+						<li>Raspberry Pi Picos were malfunctioning due to the above issue</li>
+						<li>Potentiometers were being destroyed</li>
+						<li>(Turns out we hooked them up wrong)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Other stuff we did with the engineers</h2>
+					<ul>
+						<li>Assisted with tne simulation in MATLAB</li>
+						<li>Worked to debug the remaining issues in the circuit</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Questions?</h1>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="https://uyjulian.github.io/reveal_js/dist/reveal.js"></script>
+		<script src="https://uyjulian.github.io/reveal_js/plugin/notes/notes.js"></script>
+		<script src="https://uyjulian.github.io/reveal_js/plugin/markdown/markdown.js"></script>
+		<script src="https://uyjulian.github.io/reveal_js/plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
