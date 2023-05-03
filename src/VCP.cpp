@@ -266,7 +266,6 @@ int main() {
 			}
 			*/
 			teeth_gap_passed = (teeth_gap_passed + 1) % 70;
-			/*
 			if (-1000000 > temp_2 || temp_2 > 1000000) {
 				rpm *= ((float)temp / (float)elapsed.count());
 				signal_length = ((1.0 / (36.0 * 2.0)) / (rpm / 60.0)) * 1000000000.0;
@@ -277,7 +276,6 @@ int main() {
 				signal_length_6 = signal_length_3 * 2;
 
 			}
-			*/
 			if (gaps_locations.find(teeth_gap_passed) != gaps_locations.end()) {
 				temp = signal_length_3;
 				temp_3 = 15;
