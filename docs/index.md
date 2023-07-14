@@ -5,8 +5,8 @@ title: ValvaeLibre
 
 ![Screenshot](./assets/img/valvaelibre_mechanical.jpg)
 
-A collaborative senior capstone project done by Computer Science and Engineering students at WTAMU in the spring of 2023.  
-Replace the camshaft of an engine with a Raspberry Pi Pico, controlling some solenoid actuators.  
+A collaborative senior capstone project done by Computer Science and Engineering students at [WTAMU](https://www.wtamu.edu/) in the spring of 2023.  
+Replace the [camshaft](https://en.wikipedia.org/wiki/Camshaft) of an engine with a [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/), controlling some [solenoid](https://en.wikipedia.org/wiki/Solenoid) [actuators](https://en.wikipedia.org/wiki/Actuator).  
 
 Computer Science team:  
 * Jason Shick  
@@ -23,8 +23,8 @@ Engineering team:
 
 ## Resources
 
-Source code: https://github.com/uyjulian/ValvaeLibre  
-Camshaft UI: https://ghpages.uyjulian.pw/ValvaeLibre/src/html/camshaft.html  
+* [Source code](https://github.com/uyjulian/ValvaeLibre)   
+* [Camshaft UI](https://ghpages.uyjulian.pw/ValvaeLibre/src/html/camshaft.html)  
 * Slides/User Manual/Documentation/Poster: Please [contact me](https://googlesite.uyjulian.pw/cm).  
 
 [Go to the top of the page](#)  
