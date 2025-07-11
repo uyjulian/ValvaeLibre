@@ -26,13 +26,13 @@
       "runs-on": "ubuntu-latest",
       "timeout-minutes": 20,
       "container": {
-        "image": "ubuntu:22.04",
+        "image": "ghcr.io/homebrew/ubuntu22.04:latest",
         "options": "--user 0"
       },
       "steps" : [
         {
           "name" : "Install required dependencies",
-          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential git"
+          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential git python3"
         },
         {
           "name" : "Checkout repository and submodules recursively",
@@ -47,7 +47,7 @@
         },
         {
           "name" : "Set up default build tools",
-          "run" : "brew install make cmake ninja googletest"
+          "run" : "sudo -H -E -u linuxbrew bash -c 'cd /home/linuxbrew && /home/linuxbrew/.linuxbrew/bin/brew install make cmake ninja googletest'"
         },
         {
           "name" : "Configure project",
@@ -90,7 +90,7 @@
       "steps" : [
         {
           "name" : "Install required dependencies",
-          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential git"
+          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential git python3"
         },
         {
           "name" : "Checkout repository and submodules recursively",
@@ -132,7 +132,7 @@
       "steps" : [
         {
           "name" : "Install required dependencies",
-          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential cmake ninja-build git"
+          "run" : "apt-get -y update && apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install build-essential cmake ninja-build git python3"
         },
         {
           "name" : "Checkout repository and submodules recursively",
