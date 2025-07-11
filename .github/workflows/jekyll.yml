@@ -52,7 +52,7 @@
         },
         {
           "name": "Update bundler",
-          "run": "gem install bundler:2.1.4"
+          "run": "gem install bundler:2.3.22"
         },
         {
           "name": "Install gem executables",
