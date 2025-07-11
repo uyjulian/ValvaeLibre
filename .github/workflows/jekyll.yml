@@ -56,7 +56,7 @@
         },
         {
           "name": "Install gem executables",
-          "run": "bundle install"
+          "run": "cd docs && bundle install"
         },
         {
           "name": "Build site",
